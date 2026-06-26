@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineVibe — Hollywood & K-Drama Hub</title>
+  <meta name="theme-color" content="#0c1a12">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cv: {
+              bg:      '#0c1a12',
+              surface: '#101f16',
+              raised:  '#162b1c',
+              border:  '#1e3a26',
+              accent:  '#74a882',
+              accentL: '#95c4a1',
+              accentD: '#4d7a5a',
+              gold:    '#c9993a',
+              muted:   '#527a5f',
+              text:    '#e6efe8',
+              dim:     '#8aab93',
+            }
+          },
+          fontFamily: {
+            display: ['Outfit','sans-serif'],
+            body:    ['Inter','sans-serif'],
+          },
+          keyframes: {
+            fadeIn:  { from:{opacity:0}, to:{opacity:1} },
+            slideUp: { from:{opacity:0,transform:'translateY(14px)'}, to:{opacity:1,transform:'translateY(0)'} },
+            shimmer: { '0%':{backgroundPosition:'-200% 0'}, '100%':{backgroundPosition:'200% 0'} },
+          },
+          animation: {
+            'fade-in':  'fadeIn .35s ease-out',
+            'slide-up': 'slideUp .38s ease-out',
+            'shimmer':  'shimmer 1.6s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    *{ box-sizing:border-box; }
+    body{ font-family:'Inter',sans-serif; background:#0c1a12; color:#e6efe8; }
+    h1,h2,h3{ font-family:'Outfit',sans-serif; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar{ width:5px; height:5px; }
+    ::-webkit-scrollbar-track{ background:#0c1a12; }
+    ::-webkit-scrollbar-thumb{ background:#1e3a26; border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover{ background:#74a882; }
+
+    /* nav glass */
+    .glass-nav{
+      background: rgba(12,26,18,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* hero */
+    .hero-overlay{
+      background:
+        linear-gradient(to top,  #0c1a12 0%, rgba(12,26,18,.88) 40%, rgba(12,26,18,.05) 100%),
+        linear-gradient(to right, #0c1a12 0%, rgba(12,26,18,.80) 36%, transparent 100%);
+    }
+    .hero-bg{ transition: opacity .85s ease; }
+
+    /* skeleton */
+    .skel{
+      background: linear-gradient(90deg,#1e3a26 25%,#274d31 50%,#1e3a26 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s linear infinite;
+    }
+
+    /* cards */
+    .media-card{ transition: transform .25s ease, box-shadow .25s ease; }
+    .media-card:hover{ transform:translateY(-4px); box-shadow:0 8px 30px rgba(116,168,130,.20); }
+    .media-card:hover .cposter{ transform:scale(1.05); }
+    .cposter{ transition: transform .4s ease; }
+
+    /* glows */
+    .glow-sage{ box-shadow:0 0 18px rgba(116,168,130,.45); }
+    .glow-sage-sm{ box-shadow:0 0 10px rgba(116,168,130,.30); }
+
+    /* source btn */
+    .src-btn{ transition: all .18s ease; }
+    .src-btn.on{ background:#74a882; color:#0c1a12; border-color:rgba(116,168,130,.5); font-weight:800; }
+
+    /* hero dots */
+    .hdot{ transition: all .25s ease; }
+
+    /* episode list scrollable */
+    #ep-list{ max-height:172px; overflow-y:auto; }
+    #ep-list::-webkit-scrollbar{ width:3px; }
+    #ep-list::-webkit-scrollbar-thumb{ background:#74a882; border-radius:2px; }
+
+    /* toast */
+    #toast{
+      position:fixed; bottom:22px; left:50%;
+      transform:translateX(-50%) translateY(70px);
+      z-index:9999;
+      transition: transform .32s cubic-bezier(.34,1.56,.64,1), opacity .32s ease;
+      opacity:0; pointer-events:none;
+    }
+    #toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+
+    /* tab pill active */
+    .tpill.active{ color:#74a882; background:rgba(116,168,130,.12); border-color:rgba(116,168,130,.28); }
+    .tpill{ border:1px solid transparent; transition:all .18s ease; }
+    .mpill.active{ color:#95c4a1; }
+
+    @media(prefers-reduced-motion:reduce){
+      *,::before,::after{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen selection:bg-cv-accent selection:text-cv-bg">
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav class="sticky top-0 z-40 glass-nav border-b border-cv-border px-4 lg:px-8 py-3 flex items-center gap-3">
+
+  <!-- Logo -->
+  <a href="#" onclick="goHome()" class="flex items-center gap-2.5 shrink-0 group">
+    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cv-accentD to-cv-accent flex items-center justify-center glow-sage-sm group-hover:scale-110 transition-transform duration-250">
+      <i class="fa-solid fa-clapperboard text-white text-sm"></i>
+    </div>
+    <span class="font-display font-black text-xl tracking-widest bg-gradient-to-r from-cv-accent via-cv-accentL to-emerald-300 bg-clip-text text-transparent hidden sm:block"
+          style="text-shadow:0 0 22px rgba(116,168,130,.4)">CINEVIBE</span>
+  </a>
+
+  <!-- Desktop tabs -->
+  <div class="hidden md:flex items-center gap-1 ml-2">
+    <button data-tab="all"       onclick="switchTab('all')"       class="tpill active px-4 py-1.5 rounded-full text-sm font-semibold text-cv-text">All</button>
+    <button data-tab="hollywood" onclick="switchTab('hollywood')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">Hollywood</button>
+    <button data-tab="kwave"     onclick="switchTab('kwave')"     class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">K-Wave</button>
+    <button data-tab="watchlist" onclick="switchTab('watchlist')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">
+      <i class="fa-solid fa-bookmark mr-1 text-xs"></i>Watchlist
+      <span id="wl-badge" class="hidden ml-1.5 bg-cv-accent text-cv-bg text-[10px] font-black px-1.5 py-0.5 rounded-full">0</span>
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="flex-1 max-w-sm ml-auto relative group">
+    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-cv-muted text-xs group-focus-within:text-cv-accent transition-colors"></i>
+    <input id="s-input" type="text" placeholder="Search titles…  ( press / )"
+           class="w-full pl-9 pr-8 py-2 bg-cv-raised border border-cv-border rounded-full text-sm focus:outline-none focus:border-cv-accent focus:ring-1 focus:ring-cv-accent/20 text-cv-text placeholder-cv-muted transition-all">
+    <button id="s-clear" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-cv-muted hover:text-cv-text transition-colors">
+      <i class="fa-solid fa-xmark text-xs"></i>
+    </button>
+  </div>
+
+  <!-- Settings gear -->
+  <button onclick="openSettings()" title="API key settings"
+          class="w-9 h-9 rounded-full bg-cv-raised border border-cv-border flex items-center justify-center text-cv-muted hover:text-cv-accent hover:border-cv-accent transition-all shrink-0">
+    <i class="fa-solid fa-sliders text-xs"></i>
+  </button>
+</nav>
+
+<!-- ════════════════ MOBILE TAB BAR ════════════════ -->
+<div class="md:hidden sticky top-[53px] z-30 bg-cv-surface border-b border-cv-border flex">
+  <button data-mob="all"       onclick="switchTab('all')"       class="mpill active flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-accentL"><i class="fa-solid fa-house text-sm"></i>All</button>
+  <button data-mob="hollywood" onclick="switchTab('hollywood')" class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-film text-sm"></i>Hollywood</button>
+  <button data-mob="kwave"     onclick="switchTab('kwave')"     class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-fire text-sm"></i>K-Wave</button>
+  <button data-mob="watchlist" onclick="switchTab('watchlist')" class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-bookmark text-sm"></i>Watchlist</button>
+</div>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<main>
+
+  <!-- ── HERO ── -->
+  <section id="hero" class="relative h-[62vh] sm:h-[70vh] overflow-hidden flex items-end">
+    <div id="hbg-a" class="hero-bg absolute inset-0 bg-cover bg-center scale-[1.04]"></div>
+    <div id="hbg-b" class="hero-bg absolute inset-0 bg-cover bg-center scale-[1.04] opacity-0"></div>
+    <div class="absolute inset-0 hero-overlay"></div>
+    <div id="hdots" class="absolute bottom-5 right-5 flex gap-1.5 z-10"></div>
+    <div class="relative z-10 w-full max-w-3xl px-6 md:px-12 pb-10 flex flex-col gap-3 animate-slide-up">
+      <span id="h-badge" class="w-fit bg-cv-accent/15 text-cv-accentL border border-cv-accent/25 px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-widest">
+        <i class="fa-solid fa-fire mr-1"></i>Trending Spotlight
+      </span>
+      <h1 id="h-title"    class="font-display text-3xl sm:text-5xl md:text-6xl font-black text-white leading-tight drop-shadow-lg">—</h1>
+      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-cv-dim">
+        <span id="h-type"   class="bg-cv-raised px-2 py-0.5 rounded uppercase text-cv-text tracking-wide">Movie</span>
+        <span class="text-cv-border">•</span>
+        <span id="h-year">—</span>
+        <span class="text-cv-border">•</span>
+        <span id="h-lang"   class="bg-cv-accent/10 text-cv-accentL border border-cv-accent/20 px-2 py-0.5 rounded uppercase">EN</span>
+        <span class="text-cv-border">•</span>
+        <span class="text-cv-gold flex items-center gap-1"><i class="fa-solid fa-star text-[10px]"></i><span id="h-rating">—</span></span>
+      </div>
+      <p id="h-overview" class="text-sm sm:text-base text-cv-dim max-w-xl line-clamp-2 leading-relaxed"></p>
+      <div class="flex flex-wrap gap-3 mt-1">
+        <button onclick="playHero()"
+                class="px-6 py-3 bg-gradient-to-r from-cv-accentD to-cv-accent hover:from-cv-accent hover:to-cv-accentL text-white rounded-full font-bold text-sm tracking-wide flex items-center gap-2 glow-sage hover:scale-[1.03] transition-all duration-250">
+          <i class="fa-solid fa-play"></i>Watch Now
+        </button>
+        <button id="h-wl-btn" onclick="toggleHeroWL()"
+                class="px-5 py-3 bg-cv-raised/80 hover:bg-cv-raised border border-cv-border hover:border-cv-accent rounded-full font-bold text-sm text-cv-dim hover:text-cv-text flex items-center gap-2 transition-all duration-200">
+          <i class="fa-regular fa-bookmark"></i>Watchlist
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTINUE WATCHING ── -->
+  <section id="cw-sec" class="hidden max-w-7xl mx-auto px-5 mt-10">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-display text-xl font-bold pl-3 border-l-4 border-cv-accent">
+        Continue Watching
+        <span class="ml-2 text-xs bg-cv-raised text-cv-muted font-sans rounded-full px-2 py-0.5">Resume</span>
+      </h2>
+      <button onclick="clearCW()" class="text-xs text-cv-muted hover:text-cv-text transition-colors">Clear all</button>
+    </div>
+    <div id="cw-grid" class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory"></div>
+  </section>
+
+  <!-- ── CATALOG ── -->
+  <div id="catalog" class="max-w-7xl mx-auto px-5 mt-10 pb-24 flex flex-col gap-12">
+
+    <!-- search results -->
+    <div id="s-view" class="hidden">
+      <div class="flex items-center justify-between mb-5 pl-3 border-l-4 border-cv-accent">
+        <div>
+          <h2 class="font-display text-xl font-bold">Results for <span id="s-term" class="text-cv-accentL"></span></h2>
+          <p id="s-count" class="text-xs text-cv-muted mt-0.5"></p>
+        </div>
+        <button onclick="clearSearch()" class="text-xs text-cv-muted hover:text-cv-text flex items-center gap-1.5 transition-colors">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>Back
+        </button>
+      </div>
+      <div id="s-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      <div id="s-empty" class="hidden text-center py-20">
+        <i class="fa-solid fa-magnifying-glass text-4xl text-cv-border mb-4 block"></i>
+        <p class="text-cv-muted">No results for "<span id="s-empty-term" class="text-cv-text"></span>"</p>
+      </div>
+    </div>
+
+    <!-- watchlist -->
+    <div id="wl-view" class="hidden">
+      <div class="pl-3 border-l-4 border-cv-accent mb-6">
+        <h2 class="font-display text-xl font-bold">Your Watchlist</h2>
+        <p class="text-xs text-cv-muted mt-0.5">Saved in this browser</p>
+      </div>
+      <div id="wl-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      <div id="wl-empty" class="hidden text-center py-20 border border-dashed border-cv-border rounded-2xl">
+        <i class="fa-regular fa-bookmark text-4xl text-cv-border mb-4 block"></i>
+        <p class="text-cv-muted text-sm">Nothing saved yet</p>
+        <p class="text-xs text-cv-border mt-1">Tap the bookmark on any title to save it.</p>
+      </div>
+    </div>
+
+    <!-- home sections -->
+    <div id="home-view">
+
+      <div id="sec-trend" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-cv-accent">
+          <h2 class="font-display text-xl font-bold">Trending This Week</h2>
+          <span class="text-[11px] text-cv-accentL bg-cv-accent/10 border border-cv-accent/20 px-2.5 py-0.5 rounded-full font-semibold">🔥 Hot</span>
+        </div>
+        <div id="g-trend" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-hw" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-teal-600">
+          <h2 class="font-display text-xl font-bold">Latest Hollywood</h2>
+          <span class="text-[11px] text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2.5 py-0.5 rounded-full font-semibold">Movies &amp; Series</span>
+        </div>
+        <div id="g-hw" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-ko" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-emerald-600">
+          <h2 class="font-display text-xl font-bold">Latest K-Dramas &amp; Films</h2>
+          <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+          </span>
+        </div>
+        <div id="g-ko" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-now" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-amber-600">
+          <h2 class="font-display text-xl font-bold">Now in Cinemas</h2>
+          <span class="text-[11px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full font-semibold">In Theaters</span>
+        </div>
+        <div id="g-now" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-topko" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-emerald-700">
+          <h2 class="font-display text-xl font-bold">Top Rated K-Dramas</h2>
+          <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-semibold">
+            <i class="fa-solid fa-trophy mr-1 text-[10px]"></i>All-Time Best
+          </span>
+        </div>
+        <div id="g-topko" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+    </div><!-- /home-view -->
+  </div>
+</main>
+
+<!-- ════════════════ PLAYER MODAL ════════════════ -->
+<!-- NOTE: NO sandbox attribute on iframe — that was blocking streams -->
+<div id="player-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md">
+  <div onclick="closePlayer()" class="absolute inset-0"></div>
+  <div class="relative z-10 w-full max-w-6xl mx-3 bg-cv-surface border border-cv-border rounded-2xl overflow-hidden shadow-2xl flex flex-col lg:flex-row" style="height:88vh;max-height:660px">
+
+    <!-- Video — iframe has NO sandbox so providers load freely -->
+    <div class="w-full lg:w-[68%] bg-black relative shrink-0 h-[46%] lg:h-full">
+      <div id="p-loader" class="absolute inset-0 flex flex-col gap-3 items-center justify-center bg-cv-bg z-10 transition-opacity duration-300">
+        <div class="w-10 h-10 border-2 border-cv-accent border-t-transparent rounded-full animate-spin"></div>
+        <span class="text-xs text-cv-muted">Loading stream…</span>
+      </div>
+      <iframe id="p-iframe"
+              class="w-full h-full absolute inset-0 border-0"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture; web-share"
+              allowfullscreen
+              referrerpolicy="no-referrer"></iframe>
+    </div>
+
+    <!-- Controls pane -->
+    <div class="w-full lg:w-[32%] flex flex-col bg-cv-surface border-t lg:border-t-0 lg:border-l border-cv-border h-[54%] lg:h-full">
+
+      <!-- header -->
+      <div class="p-4 border-b border-cv-border flex justify-between items-start">
+        <div class="min-w-0 pr-3">
+          <div class="flex items-center gap-2 mb-1">
+            <span id="m-type" class="text-[10px] font-black uppercase bg-cv-raised text-cv-dim px-2 py-0.5 rounded tracking-wider">Movie</span>
+            <span id="m-sub"  class="hidden text-[10px] font-black uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded tracking-wider">
+              <i class="fa-solid fa-closed-captioning mr-0.5"></i>SUB
+            </span>
+          </div>
+          <h2 id="m-title"  class="font-display font-extrabold text-lg text-white leading-tight line-clamp-1">—</h2>
+          <div class="flex items-center gap-2 text-xs text-cv-muted mt-0.5">
+            <span id="m-year">—</span>
+            <span>•</span>
+            <span class="text-cv-gold flex items-center gap-1"><i class="fa-solid fa-star text-[9px]"></i><span id="m-rating">—</span></span>
+            <span>•</span>
+            <span id="m-lang" class="uppercase text-cv-accentL">EN</span>
+          </div>
+        </div>
+        <button onclick="closePlayer()"
+                class="w-8 h-8 rounded-full bg-cv-raised hover:bg-cv-border text-cv-muted hover:text-cv-text flex items-center justify-center transition-colors shrink-0">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- scrollable section -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-5">
+
+        <!-- sources -->
+        <div>
+          <p class="text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-2">Stream Source</p>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button id="src-vidlink"    onclick="setSource('vidlink')"    class="src-btn on  px-3 py-2 rounded-lg bg-cv-raised border border-cv-border text-cv-muted text-xs font-bold">VidLink <span class="text-green-400 text-[9px]">●</span></button>
+            <button id="src-vidsrcto"   onclick="setSource('vidsrcto')"   class="src-btn     px-3 py-2 rounded-lg bg-cv-raised border border-cv-border text-cv-muted text-xs font-bold hover:text-cv-text">VidSrc.to</button>
+            <button id="src-twoembed"   onclick="setSource('twoembed')"   class="src-btn     px-3 py-2 rounded-lg bg-cv-raised border border-cv-border text-cv-muted text-xs font-bold hover:text-cv-text">2Embed</button>
+            <button id="src-superembed" onclick="setSource('superembed')" class="src-btn     px-3 py-2 rounded-lg bg-cv-raised border border-cv-border text-cv-muted text-xs font-bold hover:text-cv-text">SuperEmbed</button>          </div>
+          <p class="text-[10px] text-cv-muted/60 mt-2">Try another source if one is unavailable. All support subtitles.</p>
+          <button onclick="tryNext()" class="mt-2 w-full py-1.5 rounded-lg border border-cv-border text-cv-muted text-[11px] font-semibold hover:border-cv-accent hover:text-cv-text transition-all flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-rotate-right text-[10px]"></i> Try Next Source
+          </button>
+        </div>
+
+        <!-- TV controls -->
+        <div id="tv-ctrl" class="hidden space-y-4">
+          <div>
+            <p class="text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-2">Season</p>
+            <div class="relative">
+              <select id="s-sel" onchange="changeSeason(this.value)"
+                      class="w-full bg-cv-raised border border-cv-border rounded-lg py-2 px-3 text-sm text-cv-text focus:outline-none focus:border-cv-accent appearance-none cursor-pointer">
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-cv-muted text-[10px] pointer-events-none"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <p class="text-[10px] font-bold text-cv-muted uppercase tracking-widest">Episodes</p>
+              <span id="ep-count" class="text-[10px] text-cv-muted font-mono"></span>
+            </div>
+            <div id="ep-list" class="grid grid-cols-5 gap-1.5"></div>
+          </div>
+        </div>
+
+        <!-- synopsis -->
+        <div>
+          <p class="text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-1.5">Synopsis</p>
+          <p id="m-overview" class="text-xs text-cv-dim leading-relaxed"></p>
+        </div>
+
+      </div><!-- /scroll -->
+
+      <!-- footer -->
+      <div class="p-3.5 border-t border-cv-border flex items-center justify-between bg-cv-bg/50">
+        <button id="m-wl-btn" onclick="toggleModalWL()"
+                class="text-xs font-semibold text-cv-muted hover:text-cv-text transition-colors flex items-center gap-1.5">
+          <i class="fa-regular fa-bookmark text-sm"></i>Add to Watchlist
+        </button>
+        <span class="text-[10px] text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded font-mono">
+          <i class="fa-solid fa-closed-captioning mr-0.5"></i>Subs Available
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ SETTINGS MODAL ════════════════ -->
+<div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+  <div onclick="closeSettings()" class="absolute inset-0"></div>
+  <div class="relative z-10 w-full max-w-md mx-4 bg-cv-surface border border-cv-border rounded-2xl p-6 shadow-2xl space-y-5 animate-slide-up">
+    <div class="flex justify-between items-center pb-3 border-b border-cv-border">
+      <h3 class="font-display font-bold text-lg flex items-center gap-2">
+        <i class="fa-solid fa-key text-cv-accent"></i>TMDB API Configuration
+      </h3>
+      <button onclick="closeSettings()" class="w-8 h-8 rounded-full bg-cv-raised hover:bg-cv-border text-cv-muted hover:text-cv-text flex items-center justify-center transition-colors">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-1.5">API Key (v3)</label>
+        <input type="password" id="inp-key" placeholder="Paste your TMDB v3 key…"
+               class="w-full bg-cv-bg border border-cv-border rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:border-cv-accent text-cv-text placeholder-cv-muted/50 transition-colors">
+        <p class="text-[10px] text-cv-muted/50 mt-1">TMDB → Account → Settings → API</p>
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-1.5">Read Access Token v4 <span class="normal-case text-cv-border">(recommended — higher rate limit)</span></label>
+        <textarea id="inp-token" rows="3" placeholder="eyJhbGci…"
+                  class="w-full bg-cv-bg border border-cv-border rounded-lg py-2 px-3 text-xs focus:outline-none focus:border-cv-accent text-cv-text placeholder-cv-muted/40 transition-colors font-mono resize-none"></textarea>
+      </div>
+      <div id="api-status" class="hidden text-xs text-emerald-400 flex items-center gap-1.5 font-semibold">
+        <i class="fa-solid fa-circle-check"></i>Connected to TMDB — live catalog active
+      </div>
+    </div>
+    <div class="flex gap-3 justify-end pt-3 border-t border-cv-border">
+      <button onclick="clearKeys()"  class="px-4 py-2 bg-cv-bg border border-cv-border text-red-400 hover:text-red-300 rounded-lg text-xs font-semibold transition-colors">Reset</button>
+      <button onclick="saveKeys()"   class="px-5 py-2 bg-cv-accent hover:bg-cv-accentL text-cv-bg font-bold text-xs rounded-lg transition-colors glow-sage">Save &amp; Reload</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ TOAST ════════════════ -->
+<div id="toast" class="bg-cv-raised border border-cv-border rounded-full px-5 py-2.5 text-sm font-semibold text-cv-text flex items-center gap-2 shadow-2xl"></div>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="border-t border-cv-border bg-cv-surface py-6 px-6">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-cv-muted">
+    <span class="font-display font-bold bg-gradient-to-r from-cv-accent to-emerald-400 bg-clip-text text-transparent">CINEVIBE © 2026</span>
+    <p class="max-w-sm text-cv-border leading-relaxed text-center">
+      Metadata from TMDB. Streams via independent public providers. No files hosted. Korean content always subtitled — never dubbed.
+    </p>
+    <button onclick="openSettings()" class="text-cv-muted hover:text-cv-accent transition-colors flex items-center gap-1.5">
+      <i class="fa-solid fa-sliders text-xs"></i>API Settings
+    </button>
+  </div>
+</footer>
+
+<!-- ════════════════ APP SCRIPT ════════════════ -->
+<script>
+/*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CINEVIBE — paste your TMDB token in CFG to enable live mode
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+const CFG = {
+  KEY:   'ca13d46298f579ce3f74f364ed364d1b',   // ← v3 key   (or use gear icon ↗)
+  TOKEN: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYTEzZDQ2Mjk4ZjU3OWNlM2Y3NGYzNjRlZDM2NGQxYiIsIm5iZiI6MTc4MjM2Mjk2Mi42OTkwMDAxLCJzdWIiOiI2YTNjYjM1MjdhNjhmMzA3YjNlOTVjZDEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.jF6KkjET2Lsuktt3L7taxZfBWNW1a7lQD2oYpblr4P4',   // ← v4 token (recommended)
+  W:  'https://image.tmdb.org/t/p/w500',
+  BG: 'https://image.tmdb.org/t/p/original',
+  CACHE: 12 * 60 * 1000, // 12-min session cache
+};
+
+/*── Embed URL builders ─────────────────────────────────
+  VidLink  : fast CDN, built-in sub toggle, sage branding
+  VidSrc.to: solid fallback
+  VidSrc.cc: CDN diversity
+  Embed.su : 4th option
+  ALL sources use NO sandbox on the iframe so they work.
+────────────────────────────────────────────────────────*/
+const SRCS = {
+  vidlink:  (id,mt,s,e) => mt==='tv'
+    ? `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=74a882&secondaryColor=95c4a1&autoplay=true&title=true&poster=true`
+    : `https://vidlink.pro/movie/${id}?primaryColor=74a882&secondaryColor=95c4a1&autoplay=true&title=true&poster=true`,
+  vidsrcto: (id,mt,s,e) => mt==='tv'
+    ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}`
+    : `https://vidsrc.to/embed/movie/${id}`,
+  twoembed:   (id,mt,s,e) => mt==='tv'
+    ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}`
+    : `https://www.2embed.cc/embed/${id}`,
+  superembed: (id,mt,s,e) => mt==='tv'
+    ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`
+    : `https://multiembed.mov/?video_id=${id}&tmdb=1`,
+};
+
+const SOURCE_ORDER = ['vidlink','vidsrcto','twoembed','superembed'];
+
+/*── Demo offline catalog (used when no API key) ────────*/
+const DEMO = {
+  trend: [
+    {id:157336,title:'Interstellar',overview:'A team of explorers travel through a wormhole in space to ensure humanity\'s survival.',poster_path:'/gEU2Qv2ilfg7ex3vVjF7fgmCQQv.jpg',backdrop_path:'/xJHokZbljvjC1R06JgC3UIzjq6.jpg',release_date:'2014-11-05',vote_average:8.4,media_type:'movie',original_language:'en'},
+    {id:93405, title:'Squid Game',   overview:'Hundreds of cash-strapped players compete in deadly children\'s games for a life-changing prize.',poster_path:'/d5NXSklXv0tIY6jeZPt2hx26a6J.jpg',backdrop_path:'/354R7asnSJu79JY7o0yZ6w7zUEe.jpg',release_date:'2021-09-17',vote_average:7.8,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:9},{season_number:2,episode_count:6}]},
+    {id:693134,title:'Dune: Part Two',overview:'Paul Atreides unites with the Fremen and leads a path of revenge against those who destroyed his family.',poster_path:'/1pdfbjO0V7d8EIclgDRnN9q4hxU.jpg',backdrop_path:'/xOMo8j3j0wLLvLiJuHYZ7Z25wJ0.jpg',release_date:'2024-02-27',vote_average:8.3,media_type:'movie',original_language:'en'},
+    {id:218230,title:'Queen of Tears',overview:'A department-store queen and her small-town husband rediscover their love through a marital crisis.',poster_path:'/5wV9P8R5C85v9dEaC5b1J18Uq95.jpg',backdrop_path:'/rEs4g9T75Z7f7V1pD4222yA6G1d.jpg',release_date:'2024-03-09',vote_average:8.6,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:94796, title:'Crash Landing on You',overview:'A paragliding mishap drops a South Korean heiress into North Korea and into the life of a soldier.',poster_path:'/r5K1pXF9tYF8T7Xj83Gf48v2S0g.jpg',backdrop_path:'/nvBshn62T9Q3RzK4h0dGfM47VjE.jpg',release_date:'2019-12-14',vote_average:8.7,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:155,   title:'The Dark Knight',overview:'The Joker unleashes chaos on Gotham, forcing Batman to confront his deepest beliefs.',poster_path:'/qJ2tWw3pmIv3d2n5c86RS5tH6IX.jpg',backdrop_path:'/dqK9Hn02JjP4CN6zsJU6i4R9w8x.jpg',release_date:'2008-07-16',vote_average:8.5,media_type:'movie',original_language:'en'},
+  ],
+  hw: [
+    {id:66732, title:'Stranger Things',overview:'When a boy vanishes, a small town uncovers a mystery involving secret experiments and supernatural forces.',poster_path:'/49WJfeN0mhmmRLxs6v7XibwV5xA.jpg',backdrop_path:'/56v2DnL5a4IMwJZYM58u2zjpkQQ.jpg',release_date:'2016-07-15',vote_average:8.6,media_type:'tv',  original_language:'en',seasons:[{season_number:1,episode_count:8},{season_number:2,episode_count:9},{season_number:3,episode_count:8},{season_number:4,episode_count:9}]},
+    {id:693134,title:'Dune: Part Two',overview:'Paul Atreides unites with the Fremen on a path of revenge.',poster_path:'/1pdfbjO0V7d8EIclgDRnN9q4hxU.jpg',backdrop_path:'/xOMo8j3j0wLLvLiJuHYZ7Z25wJ0.jpg',release_date:'2024-02-27',vote_average:8.3,media_type:'movie',original_language:'en'},
+    {id:119051,title:'Wednesday',overview:'Wednesday Addams navigates Nevermore Academy while mastering her psychic powers.',poster_path:'/f9OZ85C3CA54t48t5Sfv7rPz5tB.jpg',backdrop_path:'/iHth2w3tDg4v94nZhxvy7n8gfED.jpg',release_date:'2022-11-23',vote_average:8.5,media_type:'tv',  original_language:'en',seasons:[{season_number:1,episode_count:8},{season_number:2,episode_count:8}]},
+    {id:1396,  title:'Breaking Bad',overview:'A chemistry teacher turns to manufacturing meth after a terminal cancer diagnosis.',poster_path:'/ggFHVNu6YYI5L9pCfOacjizRGt.jpg',backdrop_path:'/tsRy63Mu5cu8etL1X7ZLst5L3us.jpg',release_date:'2008-01-20',vote_average:9.5,media_type:'tv',  original_language:'en',seasons:[{season_number:1,episode_count:7},{season_number:2,episode_count:13},{season_number:3,episode_count:13},{season_number:4,episode_count:13},{season_number:5,episode_count:16}]},
+    {id:157336,title:'Interstellar',overview:'Explorers travel through a wormhole to find a new home for humanity.',poster_path:'/gEU2Qv2ilfg7ex3vVjF7fgmCQQv.jpg',backdrop_path:'/xJHokZbljvjC1R06JgC3UIzjq6.jpg',release_date:'2014-11-05',vote_average:8.4,media_type:'movie',original_language:'en'},
+    {id:155,   title:'The Dark Knight',overview:'The Joker wreaks chaos on Gotham, forcing Batman to confront his beliefs.',poster_path:'/qJ2tWw3pmIv3d2n5c86RS5tH6IX.jpg',backdrop_path:'/dqK9Hn02JjP4CN6zsJU6i4R9w8x.jpg',release_date:'2008-07-16',vote_average:8.5,media_type:'movie',original_language:'en'},
+  ],
+  ko: [
+    {id:93405, title:'Squid Game',   overview:'Cash-strapped players compete in deadly children\'s games for a huge prize.',poster_path:'/d5NXSklXv0tIY6jeZPt2hx26a6J.jpg',backdrop_path:'/354R7asnSJu79JY7o0yZ6w7zUEe.jpg',release_date:'2021-09-17',vote_average:7.8,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:9},{season_number:2,episode_count:6}]},
+    {id:218230,title:'Queen of Tears',overview:'A couple rediscovers love through a marital crisis.',poster_path:'/5wV9P8R5C85v9dEaC5b1J18Uq95.jpg',backdrop_path:'/rEs4g9T75Z7f7V1pD4222yA6G1d.jpg',release_date:'2024-03-09',vote_average:8.6,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:94796, title:'Crash Landing on You',overview:'A South Korean heiress lands in North Korea and falls in love with a soldier.',poster_path:'/r5K1pXF9tYF8T7Xj83Gf48v2S0g.jpg',backdrop_path:'/nvBshn62T9Q3RzK4h0dGfM47VjE.jpg',release_date:'2019-12-14',vote_average:8.7,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:496243,title:'Parasite',     overview:'A poor family infiltrates the life of a wealthy family with unexpected consequences.',poster_path:'/7Ji1B6xoy40zZ6a6vQ2FWm4a0nS.jpg',backdrop_path:'/hiK3j3w21cnG24V657Zq05Z7f7.jpg',release_date:'2019-05-30',vote_average:8.5,media_type:'movie',original_language:'ko'},
+    {id:99966, title:'All of Us Are Dead',overview:'A high school becomes ground zero for a zombie virus.',poster_path:'/871m36m7Z4z3W2H4L8M8F2U2f03.jpg',backdrop_path:'/6l94U5169tD6kC7Hj9QW11Vw1yH0.jpg',release_date:'2022-01-28',vote_average:8.3,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
+    {id:83733, title:'Business Proposal',overview:'A woman goes on a blind date in place of her friend and meets her CEO boss.',poster_path:'/pFQVaCH4eSeLaaqfY2ovwPu6bWlp.jpg',backdrop_path:'/b9uMbpPPVQNfX6TKkPAZ6HNjf9Y.jpg',release_date:'2022-02-28',vote_average:8.0,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
+  ],
+  now: [
+    {id:693134,title:'Dune: Part Two',overview:'Paul Atreides leads the Fremen on a path of revenge.',poster_path:'/1pdfbjO0V7d8EIclgDRnN9q4hxU.jpg',backdrop_path:'/xOMo8j3j0wLLvLiJuHYZ7Z25wJ0.jpg',release_date:'2024-02-27',vote_average:8.3,media_type:'movie',original_language:'en'},
+    {id:823464,title:'Godzilla x Kong',overview:'The mighty Kong and fearsome Godzilla face a colossal threat hidden within our world.',poster_path:'/tMefBSflR6PGQLv7WvFPpTKpYQd.jpg',backdrop_path:'/GMPpFxMmD9m3oJF6GOnOzSH3X0.jpg',release_date:'2024-03-29',vote_average:7.2,media_type:'movie',original_language:'en'},
+    {id:748783,title:'The Garfield Movie',overview:'Garfield and his father Vic go on a wild outdoor adventure.',poster_path:'/p6AbOJvMQhBmffd0pTA0V4iYU7X.jpg',backdrop_path:'/iE8FxPNK5xLIbPl4Bq38lMWcgYx.jpg',release_date:'2024-05-24',vote_average:7.0,media_type:'movie',original_language:'en'},
+  ],
+  topko: [
+    {id:62560, title:'Signal',       overview:'A detective and a profiler communicate through a walkie-talkie that transcends time.',poster_path:'/aZIhGEiMvJPbkPsCQnRFLTmVWai.jpg',backdrop_path:'/vy5m7i2l3jCFQqSCeOI8CGcRGvq.jpg',release_date:'2016-01-22',vote_average:8.9,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:94796, title:'Crash Landing on You',overview:'A heiress accidentally lands in North Korea and falls for a soldier.',poster_path:'/r5K1pXF9tYF8T7Xj83Gf48v2S0g.jpg',backdrop_path:'/nvBshn62T9Q3RzK4h0dGfM47VjE.jpg',release_date:'2019-12-14',vote_average:8.7,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:218230,title:'Queen of Tears',overview:'A couple rediscovers love through a crisis.',poster_path:'/5wV9P8R5C85v9dEaC5b1J18Uq95.jpg',backdrop_path:'/rEs4g9T75Z7f7V1pD4222yA6G1d.jpg',release_date:'2024-03-09',vote_average:8.6,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:16}]},
+    {id:496243,title:'Parasite',     overview:'A poor family schemes to become employed by a wealthy family.',poster_path:'/7Ji1B6xoy40zZ6a6vQ2FWm4a0nS.jpg',backdrop_path:'/hiK3j3w21cnG24V657Zq05Z7f7.jpg',release_date:'2019-05-30',vote_average:8.5,media_type:'movie',original_language:'ko'},
+    {id:70523, title:'My Love from the Star',overview:'An alien who landed in Korea in 1609 falls in love with a top actress.',poster_path:'/3o7xNzxlSenHYlRbBLLFXrjxTQR.jpg',backdrop_path:'/bXodbFfNiLoqCcAFhO0c3gFY8z0.jpg',release_date:'2013-12-18',vote_average:8.1,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:21}]},
+    {id:83733, title:'Business Proposal',overview:'A woman meets her CEO boss on a blind date meant for her friend.',poster_path:'/pFQVaCH4eSeLaaqfY2ovwPu6bWlp.jpg',backdrop_path:'/b9uMbpPPVQNfX6TKkPAZ6HNjf9Y.jpg',release_date:'2022-02-28',vote_average:8.0,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
+  ],
+};
+
+/*── App state ───────────────────────────────────────*/
+const A = {
+  key:'', token:'', live:false,
+  tab:'all', wl:[], cw:[],
+  item:null, season:1, ep:1, src:'vidlink',
+  hero:[], hidx:0, htimer:null, stimer:null,
+};
+
+/*── Boot ────────────────────────────────────────────*/
+window.addEventListener('DOMContentLoaded', () => {
+  loadKeys(); loadStorage();
+  boot();
+  initSearch();
+  initKeyboard();
+});
+
+async function boot() {
+  renderCW(); updateBadge();
+  if (A.live) await fetchLive();
+  else { renderAll(DEMO); initHero(DEMO.trend); }
+}
+
+/*── TMDB helpers ─────────────────────────────────────*/
+function tHdr() { return A.token ? {Authorization:`Bearer ${A.token}`} : {}; }
+function tUrl(path, qs='') {
+  const sep = path.includes('?') ? '&' : '?';
+  const kp  = A.key && !A.token ? `api_key=${A.key}` : '';
+  return `https://api.themoviedb.org/3${path}${sep}${kp}${qs ? (kp?'&':'')+qs : ''}`;
+}
+async function tGet(path, qs='') {
+  const k = 'cv_'+path+'_'+qs;
+  try {
+    const c = sessionStorage.getItem(k);
+    if (c) { const p=JSON.parse(c); if (Date.now()-p.t < CFG.CACHE) return p.d; }
+  } catch(e){}
+  const r = await fetch(tUrl(path,qs), {headers:tHdr()});
+  if (!r.ok) throw new Error('TMDB '+r.status);
+  const d = await r.json();
+  try { sessionStorage.setItem(k, JSON.stringify({t:Date.now(),d})); } catch(e){}
+  return d;
+}
+
+/*── Live data ────────────────────────────────────────*/
+async function fetchLive() {
+  skelAll();
+  try {
+    const [tr1,tr2,enM,enTV,koM,koTV,nowP,koTop] = await Promise.all([
+      tGet('/trending/all/week','page=1'),
+      tGet('/trending/all/week','page=2'),
+      tGet('/discover/movie','with_original_language=en&sort_by=popularity.desc'),
+      tGet('/discover/tv',   'with_original_language=en&sort_by=popularity.desc'),
+      tGet('/discover/movie','with_original_language=ko&sort_by=popularity.desc'),
+      tGet('/discover/tv',   'with_original_language=ko&sort_by=popularity.desc'),
+      tGet('/movie/now_playing'),
+      tGet('/discover/tv',   'with_original_language=ko&sort_by=vote_average.desc&vote_count.gte=500'),
+    ]);
+
+    const n = (x,mt) => ({
+      id:x.id, title:x.title||x.name,
+      overview:x.overview, poster_path:x.poster_path,
+      backdrop_path:x.backdrop_path,
+      release_date:x.release_date||x.first_air_date,
+      vote_average:x.vote_average,
+      media_type:mt||x.media_type,
+      original_language:x.original_language,
+    });
+
+    const raw = [...(tr1.results||[]),...(tr2.results||[])]
+      .filter(x=>(x.original_language==='en'||x.original_language==='ko')&&(x.media_type==='movie'||x.media_type==='tv'));
+    const seen = new Set();
+    const trend = raw.filter(x=>{ if(seen.has(x.id))return false; seen.add(x.id); return true; })
+      .slice(0,12).map(x=>n(x));
+
+    const mix = (a,b,ta,tb,lim=12) => {
+      const out=[];
+      for(let i=0;i<Math.max(a.length,b.length)&&out.length<lim;i++){
+        if(a[i]) out.push(n(a[i],ta));
+        if(b[i]&&out.length<lim) out.push(n(b[i],tb));
+      }
+      return out;
+    };
+
+    renderAll({
+      trend, hw: mix(enM.results||[],enTV.results||[],'movie','tv'),
+      ko: mix(koM.results||[],koTV.results||[],'movie','tv'),
+      now:   (nowP.results||[]).slice(0,12).map(x=>n(x,'movie')),
+      topko: (koTop.results||[]).slice(0,12).map(x=>n(x,'tv')),
+    });
+    initHero(trend.length ? trend : DEMO.trend);
+  } catch(err) {
+    console.warn('Live fetch error, using demo:', err.message);
+    A.live=false; updateBanner();
+    renderAll(DEMO); initHero(DEMO.trend);
+  }
+}
+
+function skelAll() {
+  ['g-trend','g-hw','g-ko','g-now','g-topko'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.innerHTML = Array.from({length:6}).map(()=>`
+      <div class="flex flex-col gap-2">
+        <div class="skel w-full aspect-[2/3] rounded-xl"></div>
+        <div class="skel h-3 w-3/4 rounded mt-1"></div>
+        <div class="skel h-2 w-1/2 rounded"></div>
+      </div>`).join('');
+  });
+}
+
+/*── Grid rendering ───────────────────────────────────*/
+function renderAll(cat) {
+  grid('g-trend', cat.trend||[]);
+  grid('g-hw',    cat.hw   ||[]);
+  grid('g-ko',    cat.ko   ||[]);
+  grid('g-now',   cat.now  ||[]);
+  grid('g-topko', cat.topko||[]);
+}
+function grid(id, items) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  if (!items.length) { el.innerHTML='<p class="col-span-full text-cv-muted text-sm py-8 text-center">No titles available.</p>'; return; }
+  items.forEach(it => el.appendChild(card(it)));
+}
+
+function card(it) {
+  const title  = it.title||it.name||'Unknown';
+  const year   = it.release_date ? new Date(it.release_date).getFullYear() : '—';
+  const rating = it.vote_average ? it.vote_average.toFixed(1) : '—';
+  const isTV   = it.media_type==='tv';
+  const isKo   = it.original_language==='ko';
+  const poster = it.poster_path
+    ? CFG.W + it.poster_path
+    : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=300';
+  const saved = inWL(it);
+
+  const el = document.createElement('div');
+  el.className = 'media-card group relative flex flex-col bg-cv-surface border border-cv-border rounded-xl overflow-hidden cursor-pointer';
+  el.innerHTML = `
+    <div class="relative w-full aspect-[2/3] overflow-hidden bg-cv-bg">
+      <img class="cposter w-full h-full object-cover" src="${poster}" alt="${title}" loading="lazy"
+           onerror="this.src='https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=300'">
+      <div class="absolute inset-0 bg-gradient-to-t from-cv-bg via-transparent to-transparent opacity-50 group-hover:opacity-20 transition-opacity duration-300"></div>
+      <div class="absolute inset-0 bg-cv-bg/55 opacity-0 group-hover:opacity-100 transition-opacity duration-220 flex items-center justify-center">
+        <div class="w-12 h-12 rounded-full bg-cv-accent flex items-center justify-center glow-sage scale-75 group-hover:scale-100 transition-transform duration-220">
+          <i class="fa-solid fa-play text-white ml-0.5"></i>
+        </div>
+      </div>
+      <button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-cv-bg/80 border border-cv-border flex items-center justify-center text-xs hover:border-cv-accent transition-all"
+              onclick="event.stopPropagation();wlCard(this,${it.id},'${it.media_type}')">
+        <i class="${saved?'fa-solid text-cv-accent':'fa-regular text-cv-muted'} fa-bookmark"></i>
+      </button>
+      <div class="absolute bottom-2 left-2 flex gap-1">
+        <span class="text-[9px] font-black uppercase bg-cv-bg/80 border border-cv-border/50 px-1.5 py-0.5 rounded text-cv-dim">${isTV?'TV':'Film'}</span>
+        ${isKo
+          ? '<span class="text-[9px] font-black uppercase bg-emerald-700/80 px-1.5 py-0.5 rounded text-white">KR</span>'
+          : '<span class="text-[9px] font-black uppercase bg-cv-accentD/80 px-1.5 py-0.5 rounded text-white">EN</span>'}
+      </div>
+    </div>
+    <div class="p-3">
+      <h3 class="font-semibold text-sm text-cv-dim group-hover:text-cv-text transition-colors line-clamp-1">${title}</h3>
+      <div class="flex items-center justify-between mt-1 text-xs">
+        <span class="text-cv-muted">${year}</span>
+        <span class="text-cv-gold flex items-center gap-0.5"><i class="fa-solid fa-star text-[9px]"></i>${rating}</span>
+      </div>
+    </div>`;
+  el.addEventListener('click', () => openPlayer(it));
+  return el;
+}
+
+/*── HERO ─────────────────────────────────────────────*/
+function initHero(items) {
+  A.hero = items.filter(x=>x.backdrop_path);
+  A.hidx = 0;
+  buildDots();
+  showHero(0, false);
+  clearInterval(A.htimer);
+  if (A.hero.length > 1)
+    A.htimer = setInterval(()=>showHero((A.hidx+1)%A.hero.length, true), 9000);
+}
+function showHero(idx, anim) {
+  A.hidx = idx;
+  const it  = A.hero[idx];
+  const url = CFG.BG + it.backdrop_path;
+  const bgA = document.getElementById('hbg-a');
+  const bgB = document.getElementById('hbg-b');
+  if (anim) {
+    bgB.style.backgroundImage = `url('${url}')`;
+    bgB.style.opacity = '0'; bgB.style.transition = 'none';
+    requestAnimationFrame(()=>{
+      bgB.style.transition='opacity .9s ease'; bgB.style.opacity='1';
+      setTimeout(()=>{ bgA.style.backgroundImage=`url('${url}')`; bgB.style.opacity='0'; },960);
+    });
+  } else { bgA.style.backgroundImage=`url('${url}')`; }
+
+  const yr = it.release_date ? new Date(it.release_date).getFullYear() : '—';
+  document.getElementById('h-title').textContent    = it.title||it.name;
+  document.getElementById('h-year').textContent     = yr;
+  document.getElementById('h-type').textContent     = it.media_type==='tv'?'TV Show':'Movie';
+  document.getElementById('h-lang').textContent     = it.original_language==='ko'?'Korean':'English';
+  document.getElementById('h-rating').textContent   = it.vote_average?it.vote_average.toFixed(1):'—';
+  document.getElementById('h-overview').textContent = it.overview
+    ? it.overview.slice(0,155)+(it.overview.length>155?'…':'') : '';
+  heroWLBtn(); updateDots();
+}
+function buildDots() {
+  const el=document.getElementById('hdots');
+  if (A.hero.length<=1){el.innerHTML='';return;}
+  el.innerHTML=A.hero.map((_,i)=>`<button onclick="jumpHero(${i})" class="hdot w-1.5 h-1.5 rounded-full bg-white/30 hover:bg-white/60"></button>`).join('');
+}
+function updateDots() {
+  document.querySelectorAll('.hdot').forEach((d,i)=>{
+    d.className=`hdot rounded-full transition-all duration-250 ${i===A.hidx?'bg-cv-accent w-4 h-1.5':'bg-white/30 hover:bg-white/60 w-1.5 h-1.5'}`;
+  });
+}
+function jumpHero(i){ clearInterval(A.htimer); showHero(i,true); A.htimer=setInterval(()=>showHero((A.hidx+1)%A.hero.length,true),9000); }
+function playHero(){ if(A.hero[A.hidx]) openPlayer(A.hero[A.hidx]); }
+function toggleHeroWL(){ if(A.hero[A.hidx]){toggleWL(A.hero[A.hidx]);heroWLBtn();} }
+function heroWLBtn(){
+  const it=A.hero[A.hidx]; if(!it) return;
+  const b=document.getElementById('h-wl-btn');
+  const sv=inWL(it);
+  b.innerHTML=sv?'<i class="fa-solid fa-bookmark text-cv-accent"></i> Saved':'<i class="fa-regular fa-bookmark"></i> Watchlist';
+  b.classList.toggle('border-cv-accent',sv);
+}
+
+/*── TABS ─────────────────────────────────────────────*/
+function switchTab(tab) {
+  A.tab = tab;
+  document.querySelectorAll('[data-tab]').forEach(b=>{
+    const on=b.dataset.tab===tab;
+    b.className=`tpill ${on?'active text-cv-text':'text-cv-muted hover:text-cv-text'} px-4 py-1.5 rounded-full text-sm font-semibold`;
+  });
+  document.querySelectorAll('[data-mob]').forEach(b=>{
+    const on=b.dataset.mob===tab;
+    b.className=`mpill ${on?'active text-cv-accentL':'text-cv-muted'} flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5`;
+  });
+
+  const hero=document.getElementById('hero');
+  const cw=document.getElementById('cw-sec');
+  const hv=document.getElementById('home-view');
+  const wv=document.getElementById('wl-view');
+  const sv=document.getElementById('s-view');
+
+  // clear search
+  sv.classList.add('hidden');
+  document.getElementById('s-input').value='';
+  document.getElementById('s-clear').classList.add('hidden');
+
+  const sT =document.getElementById('sec-trend');
+  const sH =document.getElementById('sec-hw');
+  const sK =document.getElementById('sec-ko');
+  const sN =document.getElementById('sec-now');
+  const sTK=document.getElementById('sec-topko');
+
+  if (tab==='watchlist') {
+    hero.classList.add('hidden'); cw.classList.add('hidden'); hv.classList.add('hidden');
+    wv.classList.remove('hidden'); renderWL();
+  } else {
+    hero.classList.remove('hidden'); wv.classList.add('hidden'); hv.classList.remove('hidden');
+    sT.classList.toggle('hidden',  tab!=='all');
+    sH.classList.toggle('hidden',  tab==='kwave');
+    sK.classList.toggle('hidden',  tab==='hollywood');
+    sN.classList.toggle('hidden',  tab==='kwave');
+    sTK.classList.toggle('hidden', tab==='hollywood');
+    (tab==='all'&&A.cw.length) ? cw.classList.remove('hidden') : cw.classList.add('hidden');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){ switchTab('all'); }
+
+/*── WATCHLIST ────────────────────────────────────────*/
+function inWL(it){ return A.wl.some(x=>x.id===it.id&&x.media_type===it.media_type); }
+function toggleWL(it) {
+  const i=A.wl.findIndex(x=>x.id===it.id&&x.media_type===it.media_type);
+  if (i!==-1){ A.wl.splice(i,1); showToast('<i class="fa-regular fa-bookmark mr-1.5"></i>Removed from watchlist'); }
+  else {
+    A.wl.push({id:it.id,title:it.title||it.name,media_type:it.media_type,
+      poster_path:it.poster_path,backdrop_path:it.backdrop_path,
+      release_date:it.release_date,vote_average:it.vote_average,
+      original_language:it.original_language,overview:it.overview});
+    showToast('<i class="fa-solid fa-bookmark text-cv-accent mr-1.5"></i>Added to watchlist');
+  }
+  localStorage.setItem('cv_wl', JSON.stringify(A.wl));
+  updateBadge();
+  if (A.tab==='watchlist') renderWL();
+}
+function wlCard(btn, id, mt) {
+  let it = A.wl.find(x=>x.id===id&&x.media_type===mt)||findDemo(id,mt)||{id,media_type:mt};
+  toggleWL(it);
+  const sv=inWL(it);
+  btn.querySelector('i').className=`${sv?'fa-solid text-cv-accent':'fa-regular text-cv-muted'} fa-bookmark`;
+  heroWLBtn(); modalWLBtn();
+}
+function findDemo(id,mt){
+  const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...DEMO.now,...DEMO.topko];
+  return all.find(x=>x.id===id&&x.media_type===mt)||null;
+}
+function renderWL() {
+  const g=document.getElementById('wl-grid'), e=document.getElementById('wl-empty');
+  g.innerHTML='';
+  if (!A.wl.length){ e.classList.remove('hidden'); g.classList.add('hidden'); }
+  else { e.classList.add('hidden'); g.classList.remove('hidden'); A.wl.forEach(it=>g.appendChild(card(it))); }
+}
+function updateBadge(){
+  const b=document.getElementById('wl-badge');
+  b.textContent=A.wl.length; b.classList.toggle('hidden',!A.wl.length);
+}
+
+/*── CONTINUE WATCHING ────────────────────────────────*/
+function renderCW(){
+  const sec=document.getElementById('cw-sec'), g=document.getElementById('cw-grid');
+  g.innerHTML='';
+  if(!A.cw.length||A.tab!=='all'){sec.classList.add('hidden');return;}
+  sec.classList.remove('hidden');
+  [...A.cw].reverse().forEach(it=>{
+    const poster=it.poster_path?CFG.W+it.poster_path:'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=300';
+    const label=it.media_type==='tv'?`S${it.season}·E${it.ep}`:'Movie';
+    const prog=it.media_type==='tv'?Math.min(92,((it.ep-1)/(it.totalEps||12))*100+10):60;
+    const c=document.createElement('div');
+    c.className='flex-shrink-0 w-52 bg-cv-surface border border-cv-border rounded-xl overflow-hidden cursor-pointer snap-start group hover:border-cv-accent hover:-translate-y-1 transition-all duration-220';
+    c.innerHTML=`
+      <div class="relative w-full h-28 overflow-hidden bg-cv-bg">
+        <img src="${poster}" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-350">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-9 h-9 rounded-full bg-cv-accent flex items-center justify-center glow-sage opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all">
+            <i class="fa-solid fa-play text-white text-xs ml-0.5"></i>
+          </div>
+        </div>
+        <span class="absolute bottom-2 left-2 text-[9px] font-black uppercase bg-cv-accent text-cv-bg px-2 py-0.5 rounded">${label}</span>
+        <button onclick="event.stopPropagation();removeCW(${it.id},'${it.media_type}')"
+                class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-cv-bg/70 hover:bg-cv-bg text-cv-muted hover:text-cv-text flex items-center justify-center text-[9px] z-10 transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-3 space-y-2">
+        <p class="text-xs font-semibold text-cv-dim group-hover:text-cv-text transition-colors truncate">${it.title}</p>
+        <div class="h-1 w-full bg-cv-border rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-cv-accentD to-cv-accent rounded-full" style="width:${prog}%"></div>
+        </div>
+      </div>`;
+    c.addEventListener('click',()=>openPlayer(it,it.season||1,it.ep||1));
+    g.appendChild(c);
+  });
+}
+function pushCW(it){
+  A.cw=A.cw.filter(x=>!(x.id===it.id&&x.media_type===it.media_type));
+  A.cw.push({id:it.id,title:it.title||it.name,media_type:it.media_type,
+    poster_path:it.poster_path,release_date:it.release_date,
+    vote_average:it.vote_average,original_language:it.original_language,
+    season:it.media_type==='tv'?A.season:undefined,
+    ep:it.media_type==='tv'?A.ep:undefined,
+    totalEps:it.media_type==='tv'?(it.totalEps||12):undefined});
+  if(A.cw.length>8) A.cw.shift();
+  localStorage.setItem('cv_cw',JSON.stringify(A.cw));
+}
+function removeCW(id,mt){ A.cw=A.cw.filter(x=>!(x.id===id&&x.media_type===mt)); localStorage.setItem('cv_cw',JSON.stringify(A.cw)); renderCW(); }
+function clearCW(){ A.cw=[]; localStorage.removeItem('cv_cw'); renderCW(); }
+
+/*── PLAYER ───────────────────────────────────────────*/
+async function openPlayer(it,s=1,e=1){
+  A.item=it; A.season=s; A.ep=e;
+  document.getElementById('player-modal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+
+  const isKo=it.original_language==='ko';
+  document.getElementById('m-title').textContent    = it.title||it.name;
+  document.getElementById('m-year').textContent     = it.release_date?new Date(it.release_date).getFullYear():'—';
+  document.getElementById('m-rating').textContent   = it.vote_average?it.vote_average.toFixed(1):'—';
+  document.getElementById('m-lang').textContent     = (it.original_language||'en').toUpperCase();
+  document.getElementById('m-type').textContent     = it.media_type==='tv'?'TV Show':'Movie';
+  document.getElementById('m-overview').textContent = it.overview||'No synopsis available.';
+  document.getElementById('m-sub').classList.toggle('hidden',!isKo);
+  modalWLBtn();
+
+  const tv=document.getElementById('tv-ctrl');
+  if (it.media_type==='tv'){ tv.classList.remove('hidden'); await fillTV(it); }
+  else tv.classList.add('hidden');
+
+  setSource(A.src);
+  pushCW(it); renderCW();
+}
+function closePlayer(){
+  document.getElementById('p-iframe').src='';
+  document.getElementById('player-modal').classList.add('hidden');
+  document.body.style.overflow='';
+  A.item=null;
+}
+function modalWLBtn(){
+  if(!A.item)return;
+  const b=document.getElementById('m-wl-btn'), sv=inWL(A.item);
+  b.innerHTML=sv
+    ?'<i class="fa-solid fa-bookmark text-cv-accent text-sm mr-1"></i>Saved to Watchlist'
+    :'<i class="fa-regular fa-bookmark text-sm mr-1"></i>Add to Watchlist';
+}
+function toggleModalWL(){ if(!A.item)return; toggleWL(A.item); modalWLBtn(); heroWLBtn(); }
+
+/*── TV controls ──────────────────────────────────────*/
+async function fillTV(it){
+  const sel=document.getElementById('s-sel');
+  sel.innerHTML='';
+  let seasons=it.seasons;
+  if(!seasons&&A.live){
+    try{ const d=await tGet('/tv/'+it.id); seasons=d.seasons; it.totalEps=d.number_of_episodes; }catch(e){}
+  }
+  if(!seasons) seasons=[{season_number:1,episode_count:12}];
+  seasons.filter(s=>s.season_number>0).forEach(s=>{
+    const o=document.createElement('option');
+    o.value=s.season_number; o.textContent='Season '+s.season_number;
+    if(s.season_number===A.season) o.selected=true;
+    sel.appendChild(o);
+  });
+  const cur=seasons.find(s=>s.season_number===A.season)||seasons[0];
+  fillEps(cur?cur.episode_count:12);
+  updateIframe();
+}
+function fillEps(n){
+  const list=document.getElementById('ep-list');
+  document.getElementById('ep-count').textContent=n+' ep';
+  list.innerHTML='';
+  for(let i=1;i<=n;i++){
+    const b=document.createElement('button');
+    const on=i===A.ep;
+    b.className=`py-2 text-center rounded text-[11px] font-bold border transition-all duration-150 ${on?'bg-cv-accent border-cv-accent/40 text-cv-bg':'bg-cv-raised border-cv-border text-cv-muted hover:text-cv-text hover:border-cv-accent/40'}`;
+    b.textContent=i; b.onclick=()=>pickEp(i); list.appendChild(b);
+  }
+  setTimeout(()=>{ const a=list.children[A.ep-1]; if(a)a.scrollIntoView({block:'nearest',behavior:'smooth'}); },50);
+}
+function changeSeason(v){ A.season=parseInt(v); A.ep=1; fillTV(A.item); }
+function pickEp(n){
+  A.ep=n;
+  Array.from(document.getElementById('ep-list').children).forEach((b,i)=>{
+    const on=i+1===n;
+    b.className=`py-2 text-center rounded text-[11px] font-bold border transition-all duration-150 ${on?'bg-cv-accent border-cv-accent/40 text-cv-bg':'bg-cv-raised border-cv-border text-cv-muted hover:text-cv-text hover:border-cv-accent/40'}`;
+  });
+  updateIframe(); pushCW(A.item);
+}
+
+/*── Source switcher ──────────────────────────────────*/
+function setSource(src){
+  A.src=src;
+  ['vidlink','vidsrcto','twoembed','superembed'].forEach(id=>{
+    const b=document.getElementById('src-'+id);
+    if(b){ b.classList.toggle('on', id===src); }
+  });
+  updateIframe();
+}
+/*── Try Next Source ───────────────────────────────────────────*/
+function tryNext(){
+  const order=['vidlink','vidsrcto','twoembed','superembed'];
+  const next=order[(order.indexOf(A.src)+1)%order.length];
+  const labels={vidlink:'VidLink',vidsrcto:'VidSrc.to',twoembed:'2Embed',superembed:'SuperEmbed'};
+  setSource(next);
+  showToast('<i class="fa-solid fa-rotate-right mr-1.5"></i>Switched to '+labels[next]);
+}
+function updateIframe(){
+  if(!A.item)return;
+  const iframe=document.getElementById('p-iframe');
+  const loader=document.getElementById('p-loader');
+  loader.style.opacity='1'; loader.style.pointerEvents='auto';
+  iframe.src = SRCS[A.src](A.item.id, A.item.media_type, A.season, A.ep);
+  iframe.onload=()=>{ loader.style.opacity='0'; setTimeout(()=>loader.style.pointerEvents='none',300); };
+}
+
+/*── Search ───────────────────────────────────────────*/
+function initSearch(){
+  const inp=document.getElementById('s-input');
+  const clr=document.getElementById('s-clear');
+  inp.addEventListener('input',e=>{
+    const q=e.target.value.trim();
+    clr.classList.toggle('hidden',!q);
+    clearTimeout(A.stimer);
+    A.stimer=setTimeout(()=>doSearch(q),280);
+  });
+}
+async function doSearch(q){
+  if(!q){clearSearch();return;}
+  ['hero','cw-sec','home-view','wl-view'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('s-view').classList.remove('hidden');
+  document.getElementById('s-term').textContent=`"${q}"`;
+
+  let results=[];
+  if(A.live){
+    try{
+      const d=await tGet('/search/multi','query='+encodeURIComponent(q));
+      results=(d.results||[]).filter(x=>(x.original_language==='en'||x.original_language==='ko')&&(x.media_type==='movie'||x.media_type==='tv'))
+        .map(x=>({...x,title:x.title||x.name,release_date:x.release_date||x.first_air_date}));
+    }catch(e){}
+  }
+  if(!results.length){
+    const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...DEMO.now,...DEMO.topko];
+    const seen=new Set(); const uniq=all.filter(x=>{ if(seen.has(x.id))return false;seen.add(x.id);return true; });
+    const ql=q.toLowerCase();
+    results=uniq.filter(x=>((x.title||x.name)||'').toLowerCase().includes(ql)||(x.overview||'').toLowerCase().includes(ql));
+  }
+
+  const sg=document.getElementById('s-grid'), se=document.getElementById('s-empty');
+  sg.innerHTML='';
+  if(!results.length){
+    se.classList.remove('hidden');
+    document.getElementById('s-empty-term').textContent=q;
+    document.getElementById('s-count').textContent='';
+  } else {
+    se.classList.add('hidden');
+    document.getElementById('s-count').textContent=results.length+' title'+(results.length!==1?'s':'')+' found';
+    results.forEach(it=>sg.appendChild(card(it)));
+  }
+}
+function clearSearch(){
+  document.getElementById('s-input').value='';
+  document.getElementById('s-clear').classList.add('hidden');
+  document.getElementById('s-view').classList.add('hidden');
+  document.getElementById('s-empty').classList.add('hidden');
+  if(A.tab==='watchlist'){
+    document.getElementById('wl-view').classList.remove('hidden');
+  } else {
+    document.getElementById('hero').classList.remove('hidden');
+    document.getElementById('home-view').classList.remove('hidden');
+    if(A.tab==='all'&&A.cw.length) document.getElementById('cw-sec').classList.remove('hidden');
+  }
+}
+
+/*── Keys / settings ──────────────────────────────────*/
+function loadKeys(){
+  A.key  =localStorage.getItem('cv_key')  ||CFG.KEY;
+  A.token=localStorage.getItem('cv_token')||CFG.TOKEN;
+  A.live =!!(A.key||A.token);
+  updateBanner();
+}
+function updateBanner(){
+  const s=document.getElementById('api-status');
+  if(s) s.classList.toggle('hidden',!A.live);
+}
+function loadStorage(){
+  try{ A.wl=JSON.parse(localStorage.getItem('cv_wl'))||[]; }catch(e){ A.wl=[]; }
+  try{ A.cw=JSON.parse(localStorage.getItem('cv_cw'))||[]; }catch(e){ A.cw=[]; }
+}
+function openSettings(){
+  document.getElementById('inp-key').value  =localStorage.getItem('cv_key')  ||'';
+  document.getElementById('inp-token').value=localStorage.getItem('cv_token')||'';
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+function closeSettings(){ document.getElementById('settings-modal').classList.add('hidden'); }
+async function saveKeys(){
+  const k=document.getElementById('inp-key').value.trim();
+  const t=document.getElementById('inp-token').value.trim();
+  k ? localStorage.setItem('cv_key',k)   : localStorage.removeItem('cv_key');
+  t ? localStorage.setItem('cv_token',t) : localStorage.removeItem('cv_token');
+  closeSettings(); loadKeys(); await boot();
+}
+function clearKeys(){
+  localStorage.removeItem('cv_key'); localStorage.removeItem('cv_token');
+  document.getElementById('inp-key').value='';
+  document.getElementById('inp-token').value='';
+  closeSettings(); loadKeys(); boot();
+}
+
+/*── Keyboard shortcuts ───────────────────────────────*/
+function initKeyboard(){
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){
+      if(!document.getElementById('player-modal').classList.contains('hidden')) closePlayer();
+      if(!document.getElementById('settings-modal').classList.contains('hidden')) closeSettings();
+    }
+    if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){
+      e.preventDefault(); document.getElementById('s-input').focus();
+    }
+  });
+}
+
+/*── Toast ────────────────────────────────────────────*/
+let _tt;
+function showToast(html){
+  const el=document.getElementById('toast');
+  el.innerHTML=html; el.classList.add('show');
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2600);
+}
+</script>
+</body>
+</html>
