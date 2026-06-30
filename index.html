@@ -22,6 +22,9 @@
               accent:  '#74a882',
               accentL: '#95c4a1',
               accentD: '#4d7a5a',
+              pink:    '#d98cab',
+              pinkL:   '#e8a8c0',
+              pinkD:   '#b5688a',
               gold:    '#c9993a',
               muted:   '#527a5f',
               text:    '#e6efe8',
@@ -93,6 +96,8 @@
     /* glows */
     .glow-sage{ box-shadow:0 0 18px rgba(116,168,130,.45); }
     .glow-sage-sm{ box-shadow:0 0 10px rgba(116,168,130,.30); }
+    .glow-pink{ box-shadow:0 0 18px rgba(217,140,171,.45); }
+    .glow-pink-sm{ box-shadow:0 0 10px rgba(217,140,171,.30); }
 
     /* source btn */
     .src-btn{ transition: all .18s ease; }
@@ -137,7 +142,7 @@
     <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cv-accentD to-cv-accent flex items-center justify-center glow-sage-sm group-hover:scale-110 transition-transform duration-250">
       <i class="fa-solid fa-clapperboard text-white text-sm"></i>
     </div>
-    <span class="font-display font-black text-xl tracking-widest bg-gradient-to-r from-cv-accent via-cv-accentL to-emerald-300 bg-clip-text text-transparent hidden sm:block"
+    <span class="font-display font-black text-xl tracking-widest bg-gradient-to-r from-cv-accent via-cv-accentL to-cv-pinkL bg-clip-text text-transparent hidden sm:block"
           style="text-shadow:0 0 22px rgba(116,168,130,.4)">CINEVIBE</span>
   </a>
 
@@ -187,7 +192,7 @@
     <div class="absolute inset-0 hero-overlay"></div>
     <div id="hdots" class="absolute bottom-5 right-5 flex gap-1.5 z-10"></div>
     <div class="relative z-10 w-full max-w-3xl px-6 md:px-12 pb-10 flex flex-col gap-3 animate-slide-up">
-      <span id="h-badge" class="w-fit bg-cv-accent/15 text-cv-accentL border border-cv-accent/25 px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-widest">
+      <span id="h-badge" class="w-fit bg-cv-pink/15 text-cv-pinkL border border-cv-pink/25 px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-widest">
         <i class="fa-solid fa-fire mr-1"></i>Trending Spotlight
       </span>
       <h1 id="h-title"    class="font-display text-3xl sm:text-5xl md:text-6xl font-black text-white leading-tight drop-shadow-lg">—</h1>
@@ -203,7 +208,7 @@
       <p id="h-overview" class="text-sm sm:text-base text-cv-dim max-w-xl line-clamp-2 leading-relaxed"></p>
       <div class="flex flex-wrap gap-3 mt-1">
         <button onclick="playHero()"
-                class="px-6 py-3 bg-gradient-to-r from-cv-accentD to-cv-accent hover:from-cv-accent hover:to-cv-accentL text-white rounded-full font-bold text-sm tracking-wide flex items-center gap-2 glow-sage hover:scale-[1.03] transition-all duration-250">
+                class="px-6 py-3 bg-gradient-to-r from-cv-accent to-cv-pink hover:from-cv-accentL hover:to-cv-pinkL text-cv-bg rounded-full font-bold text-sm tracking-wide flex items-center gap-2 glow-pink hover:scale-[1.03] transition-all duration-250">
           <i class="fa-solid fa-play"></i>Watch Now
         </button>
         <button id="h-wl-btn" onclick="toggleHeroWL()"
@@ -267,15 +272,15 @@
       <div id="sec-trend" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-cv-accent">
           <h2 class="font-display text-xl font-bold">Trending This Week</h2>
-          <span class="text-[11px] text-cv-accentL bg-cv-accent/10 border border-cv-accent/20 px-2.5 py-0.5 rounded-full font-semibold">🔥 Hot</span>
+          <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">🔥 Hot</span>
         </div>
         <div id="g-trend" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
 
       <div id="sec-hw" class="flex flex-col gap-5">
-        <div class="flex items-center justify-between pl-3 border-l-4 border-teal-600">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-cv-accentD">
           <h2 class="font-display text-xl font-bold">Latest Hollywood</h2>
-          <span class="text-[11px] text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2.5 py-0.5 rounded-full font-semibold">Movies &amp; Series</span>
+          <span class="text-[11px] text-cv-accentL bg-cv-accent/10 border border-cv-accent/20 px-2.5 py-0.5 rounded-full font-semibold">Movies &amp; Series</span>
         </div>
         <div id="g-hw" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -291,17 +296,17 @@
       </div>
 
       <div id="sec-now" class="flex flex-col gap-5">
-        <div class="flex items-center justify-between pl-3 border-l-4 border-amber-600">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-cv-gold">
           <h2 class="font-display text-xl font-bold">Now in Cinemas</h2>
-          <span class="text-[11px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full font-semibold">In Theaters</span>
+          <span class="text-[11px] text-cv-gold bg-cv-gold/10 border border-cv-gold/20 px-2.5 py-0.5 rounded-full font-semibold">In Theaters</span>
         </div>
         <div id="g-now" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
 
       <div id="sec-topko" class="flex flex-col gap-5">
-        <div class="flex items-center justify-between pl-3 border-l-4 border-emerald-700">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-cv-pink">
           <h2 class="font-display text-xl font-bold">Top Rated K-Dramas</h2>
-          <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-semibold">
+          <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">
             <i class="fa-solid fa-trophy mr-1 text-[10px]"></i>All-Time Best
           </span>
         </div>
@@ -465,7 +470,7 @@
 <!-- ════════════════ FOOTER ════════════════ -->
 <footer class="border-t border-cv-border bg-cv-surface py-6 px-6">
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-cv-muted">
-    <span class="font-display font-bold bg-gradient-to-r from-cv-accent to-emerald-400 bg-clip-text text-transparent">CINEVIBE © 2026</span>
+    <span class="font-display font-bold bg-gradient-to-r from-cv-accent to-cv-pinkL bg-clip-text text-transparent">CINEVIBE © 2026</span>
     <p class="max-w-sm text-cv-border leading-relaxed text-center">
       Metadata from TMDB. Streams via independent public providers. No files hosted. Korean content always subtitled — never dubbed.
     </p>
@@ -702,7 +707,7 @@ function card(it) {
       </div>
       <button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-cv-bg/80 border border-cv-border flex items-center justify-center text-xs hover:border-cv-accent transition-all"
               onclick="event.stopPropagation();wlCard(this,${it.id},'${it.media_type}')">
-        <i class="${saved?'fa-solid text-cv-accent':'fa-regular text-cv-muted'} fa-bookmark"></i>
+        <i class="${saved?'fa-solid text-cv-pink':'fa-regular text-cv-muted'} fa-bookmark"></i>
       </button>
       <div class="absolute bottom-2 left-2 flex gap-1">
         <span class="text-[9px] font-black uppercase bg-cv-bg/80 border border-cv-border/50 px-1.5 py-0.5 rounded text-cv-dim">${isTV?'TV':'Film'}</span>
@@ -774,8 +779,8 @@ function heroWLBtn(){
   const it=A.hero[A.hidx]; if(!it) return;
   const b=document.getElementById('h-wl-btn');
   const sv=inWL(it);
-  b.innerHTML=sv?'<i class="fa-solid fa-bookmark text-cv-accent"></i> Saved':'<i class="fa-regular fa-bookmark"></i> Watchlist';
-  b.classList.toggle('border-cv-accent',sv);
+  b.innerHTML=sv?'<i class="fa-solid fa-bookmark text-cv-pink"></i> Saved':'<i class="fa-regular fa-bookmark"></i> Watchlist';
+  b.classList.toggle('border-cv-pink',sv);
 }
 
 /*── TABS ─────────────────────────────────────────────*/
@@ -833,7 +838,7 @@ function toggleWL(it) {
       poster_path:it.poster_path,backdrop_path:it.backdrop_path,
       release_date:it.release_date,vote_average:it.vote_average,
       original_language:it.original_language,overview:it.overview});
-    showToast('<i class="fa-solid fa-bookmark text-cv-accent mr-1.5"></i>Added to watchlist');
+    showToast('<i class="fa-solid fa-bookmark text-cv-pink mr-1.5"></i>Added to watchlist');
   }
   localStorage.setItem('cv_wl', JSON.stringify(A.wl));
   updateBadge();
@@ -843,7 +848,7 @@ function wlCard(btn, id, mt) {
   let it = A.wl.find(x=>x.id===id&&x.media_type===mt)||findDemo(id,mt)||{id,media_type:mt};
   toggleWL(it);
   const sv=inWL(it);
-  btn.querySelector('i').className=`${sv?'fa-solid text-cv-accent':'fa-regular text-cv-muted'} fa-bookmark`;
+  btn.querySelector('i').className=`${sv?'fa-solid text-cv-pink':'fa-regular text-cv-muted'} fa-bookmark`;
   heroWLBtn(); modalWLBtn();
 }
 function findDemo(id,mt){
@@ -944,7 +949,7 @@ function modalWLBtn(){
   if(!A.item)return;
   const b=document.getElementById('m-wl-btn'), sv=inWL(A.item);
   b.innerHTML=sv
-    ?'<i class="fa-solid fa-bookmark text-cv-accent text-sm mr-1"></i>Saved to Watchlist'
+    ?'<i class="fa-solid fa-bookmark text-cv-pink text-sm mr-1"></i>Saved to Watchlist'
     :'<i class="fa-regular fa-bookmark text-sm mr-1"></i>Add to Watchlist';
 }
 function toggleModalWL(){ if(!A.item)return; toggleWL(A.item); modalWLBtn(); heroWLBtn(); }
