@@ -430,6 +430,10 @@
       </button>
     </div>
     <div class="space-y-4">
+      <p class="text-xs text-cv-dim leading-relaxed bg-cv-raised border border-cv-border rounded-lg p-3">
+        CineVibe needs your own free TMDB key to pull live, up-to-date titles. Without one, you'll see a small offline demo catalog instead.
+        Get a key at <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener" class="text-cv-accentL underline hover:text-cv-accent">themoviedb.org/settings/api</a> — it's free and takes a minute.
+      </p>
       <div>
         <label class="block text-[10px] font-bold text-cv-muted uppercase tracking-widest mb-1.5">API Key (v3)</label>
         <input type="password" id="inp-key" placeholder="Paste your TMDB v3 key…"
@@ -444,6 +448,9 @@
       <div id="api-status" class="hidden text-xs text-emerald-400 flex items-center gap-1.5 font-semibold">
         <i class="fa-solid fa-circle-check"></i>Connected to TMDB — live catalog active
       </div>
+      <p class="text-[10px] text-cv-muted/60 leading-relaxed">
+        <i class="fa-solid fa-lock mr-1"></i>Your key is stored only in this browser's local storage. It is never sent anywhere except directly to TMDB's API.
+      </p>
     </div>
     <div class="flex gap-3 justify-end pt-3 border-t border-cv-border">
       <button onclick="clearKeys()"  class="px-4 py-2 bg-cv-bg border border-cv-border text-red-400 hover:text-red-300 rounded-lg text-xs font-semibold transition-colors">Reset</button>
@@ -474,8 +481,8 @@
   CINEVIBE — paste your TMDB token in CFG to enable live mode
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 const CFG = {
-  KEY:   'ca13d46298f579ce3f74f364ed364d1b',   // ← v3 key   (or use gear icon ↗)
-  TOKEN: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYTEzZDQ2Mjk4ZjU3OWNlM2Y3NGYzNjRlZDM2NGQxYiIsIm5iZiI6MTc4MjM2Mjk2Mi42OTkwMDAxLCJzdWIiOiI2YTNjYjM1MjdhNjhmMzA3YjNlOTVjZDEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.jF6KkjET2Lsuktt3L7taxZfBWNW1a7lQD2oYpblr4P4',   // ← v4 token (recommended)
+  KEY:   '',   // ← v3 key   (paste your own via the gear icon ↗, never commit a real key here)
+  TOKEN: '',   // ← v4 token (recommended — paste via Settings, not in source)
   W:  'https://image.tmdb.org/t/p/w500',
   BG: 'https://image.tmdb.org/t/p/original',
   CACHE: 12 * 60 * 1000, // 12-min session cache
