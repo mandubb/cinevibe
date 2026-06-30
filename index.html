@@ -126,6 +126,10 @@
     .tpill{ border:1px solid transparent; transition:all .18s ease; }
     .mpill.active{ color:#95c4a1; }
 
+    /* hide scrollbar on horizontally scrollable tab bars, keep functionality */
+    .no-scrollbar{ scrollbar-width:none; -ms-overflow-style:none; }
+    .no-scrollbar::-webkit-scrollbar{ display:none; }
+
     @media(prefers-reduced-motion:reduce){
       *,::before,::after{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
     }
@@ -147,11 +151,13 @@
   </a>
 
   <!-- Desktop tabs -->
-  <div class="hidden md:flex items-center gap-1 ml-2">
-    <button data-tab="all"       onclick="switchTab('all')"       class="tpill active px-4 py-1.5 rounded-full text-sm font-semibold text-cv-text">All</button>
-    <button data-tab="hollywood" onclick="switchTab('hollywood')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">Hollywood</button>
-    <button data-tab="kwave"     onclick="switchTab('kwave')"     class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">K-Wave</button>
-    <button data-tab="watchlist" onclick="switchTab('watchlist')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text">
+  <div class="hidden md:flex items-center gap-1 ml-2 overflow-x-auto no-scrollbar">
+    <button data-tab="all"       onclick="switchTab('all')"       class="tpill active px-4 py-1.5 rounded-full text-sm font-semibold text-cv-text shrink-0">All</button>
+    <button data-tab="hollywood" onclick="switchTab('hollywood')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text shrink-0">Hollywood</button>
+    <button data-tab="kwave"     onclick="switchTab('kwave')"     class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text shrink-0">K-Wave</button>
+    <button data-tab="cdrama"    onclick="switchTab('cdrama')"    class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text shrink-0">C-Drama</button>
+    <button data-tab="jdrama"    onclick="switchTab('jdrama')"    class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text shrink-0">J-Drama</button>
+    <button data-tab="watchlist" onclick="switchTab('watchlist')" class="tpill px-4 py-1.5 rounded-full text-sm font-semibold text-cv-muted hover:text-cv-text shrink-0">
       <i class="fa-solid fa-bookmark mr-1 text-xs"></i>Watchlist
       <span id="wl-badge" class="hidden ml-1.5 bg-cv-accent text-cv-bg text-[10px] font-black px-1.5 py-0.5 rounded-full">0</span>
     </button>
@@ -175,11 +181,13 @@
 </nav>
 
 <!-- ════════════════ MOBILE TAB BAR ════════════════ -->
-<div class="md:hidden sticky top-[53px] z-30 bg-cv-surface border-b border-cv-border flex">
-  <button data-mob="all"       onclick="switchTab('all')"       class="mpill active flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-accentL"><i class="fa-solid fa-house text-sm"></i>All</button>
-  <button data-mob="hollywood" onclick="switchTab('hollywood')" class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-film text-sm"></i>Hollywood</button>
-  <button data-mob="kwave"     onclick="switchTab('kwave')"     class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-fire text-sm"></i>K-Wave</button>
-  <button data-mob="watchlist" onclick="switchTab('watchlist')" class="mpill flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5 text-cv-muted"><i class="fa-solid fa-bookmark text-sm"></i>Watchlist</button>
+<div class="md:hidden sticky top-[53px] z-30 bg-cv-surface border-b border-cv-border flex overflow-x-auto no-scrollbar">
+  <button data-mob="all"       onclick="switchTab('all')"       class="mpill active flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-accentL shrink-0 min-w-[64px]"><i class="fa-solid fa-house text-sm"></i>All</button>
+  <button data-mob="hollywood" onclick="switchTab('hollywood')" class="mpill flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-muted shrink-0 min-w-[64px]"><i class="fa-solid fa-film text-sm"></i>Hollywood</button>
+  <button data-mob="kwave"     onclick="switchTab('kwave')"     class="mpill flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-muted shrink-0 min-w-[64px]"><i class="fa-solid fa-fire text-sm"></i>K-Wave</button>
+  <button data-mob="cdrama"    onclick="switchTab('cdrama')"    class="mpill flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-muted shrink-0 min-w-[64px]"><i class="fa-solid fa-yin-yang text-sm"></i>C-Drama</button>
+  <button data-mob="jdrama"    onclick="switchTab('jdrama')"    class="mpill flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-muted shrink-0 min-w-[64px]"><i class="fa-solid fa-torii-gate text-sm"></i>J-Drama</button>
+  <button data-mob="watchlist" onclick="switchTab('watchlist')" class="mpill flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 text-cv-muted shrink-0 min-w-[64px]"><i class="fa-solid fa-bookmark text-sm"></i>Watchlist</button>
 </div>
 
 <!-- ════════════════ MAIN ════════════════ -->
@@ -293,6 +301,26 @@
           </span>
         </div>
         <div id="g-ko" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-cn" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-red-600">
+          <h2 class="font-display text-xl font-bold">Latest C-Dramas &amp; Films</h2>
+          <span class="text-[11px] text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+          </span>
+        </div>
+        <div id="g-cn" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <div id="sec-jp" class="flex flex-col gap-5">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-indigo-500">
+          <h2 class="font-display text-xl font-bold">Latest J-Dramas &amp; Films</h2>
+          <span class="text-[11px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+          </span>
+        </div>
+        <div id="g-jp" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
 
       <div id="sec-now" class="flex flex-col gap-5">
@@ -543,6 +571,22 @@ const DEMO = {
     {id:99966, title:'All of Us Are Dead',overview:'A high school becomes ground zero for a zombie virus.',poster_path:'/871m36m7Z4z3W2H4L8M8F2U2f03.jpg',backdrop_path:'/6l94U5169tD6kC7Hj9QW11Vw1yH0.jpg',release_date:'2022-01-28',vote_average:8.3,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
     {id:83733, title:'Business Proposal',overview:'A woman goes on a blind date in place of her friend and meets her CEO boss.',poster_path:'/pFQVaCH4eSeLaaqfY2ovwPu6bWlp.jpg',backdrop_path:'/b9uMbpPPVQNfX6TKkPAZ6HNjf9Y.jpg',release_date:'2022-02-28',vote_average:8.0,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
   ],
+  cn: [
+    {id:91239, title:'The Untamed',  overview:'Two cultivators reunite years after a great war to uncover the truth behind a dangerous artifact.',poster_path:'/dDccmGwxiBoDOlH2sjVMOj6c2X9.jpg',backdrop_path:'/zMjlYRRBOcfDpJ97wPPIDXFtxqV.jpg',release_date:'2019-06-27',vote_average:8.5,media_type:'tv',  original_language:'zh',seasons:[{season_number:1,episode_count:50}]},
+    {id:1100027,title:'Story of Yanxi Palace',overview:'A young woman enters the Forbidden City seeking revenge, navigating court politics and rising in power.',poster_path:'/wQUTeCNoaDeJmqJZ5VYbB8MGHmv.jpg',backdrop_path:'/wQUTeCNoaDeJmqJZ5VYbB8MGHmv.jpg',release_date:'2018-07-19',vote_average:8.2,media_type:'tv',  original_language:'zh',seasons:[{season_number:1,episode_count:70}]},
+    {id:508442,title:'Soul',         overview:'A man\'s soul is separated from his body and must journey through both the real world and a vast unknown realm.',poster_path:'/lBNNKwTGtWdL2x9aOWfHCMqypGD.jpg',backdrop_path:'/kf456ZGEXDDpZcdK3w7RNkbDqkO.jpg',release_date:'2020-12-25',vote_average:8.1,media_type:'movie',original_language:'zh'},
+    {id:1262, title:'Hero',          overview:'A nameless warrior recounts his defeat of three assassins to the King of Qin, weaving a story of loyalty and sacrifice.',poster_path:'/sxFlWMqDdpYZQEDD8RW1lY1qPzz.jpg',backdrop_path:'/2QQqWNlxTSV9SkUSx5KKzPnPlqV.jpg',release_date:'2002-10-24',vote_average:7.7,media_type:'movie',original_language:'zh'},
+    {id:1100088,title:'Nirvana in Fire',overview:'A brilliant strategist returns to the capital under a new identity to clear his family\'s name and reshape the empire.',poster_path:'/8kDvIWHJUjGfm2eDqz7AvHWBSXf.jpg',backdrop_path:'/8kDvIWHJUjGfm2eDqz7AvHWBSXf.jpg',release_date:'2015-09-19',vote_average:8.8,media_type:'tv',  original_language:'zh',seasons:[{season_number:1,episode_count:54}]},
+    {id:872585,title:'Hidden Blade', overview:'Set in 1940s Shanghai, undercover agents navigate deception and loyalty during the Japanese occupation.',poster_path:'/4n8VkPbZ8wPM3RYWavfqzMCRSnD.jpg',backdrop_path:'/4n8VkPbZ8wPM3RYWavfqzMCRSnD.jpg',release_date:'2023-07-09',vote_average:7.0,media_type:'movie',original_language:'zh'},
+  ],
+  jp: [
+    {id:127532,title:'Your Name',    overview:'Two strangers find themselves linked in a bizarre way, swapping bodies and gradually falling for each other across time.',poster_path:'/q719jXXEzOoYaps6babgKnONONX.jpg',backdrop_path:'/8nXoex5gOyovv7QyOIcS1HFFqyq.jpg',release_date:'2016-08-26',vote_average:8.5,media_type:'movie',original_language:'ja'},
+    {id:85937, title:'Alice in Borderland',overview:'A group of friends find themselves in a mysterious version of Tokyo where they must complete deadly games to survive.',poster_path:'/3OoMVcqsIPwhWFzqyiZQJ4lXGEn.jpg',backdrop_path:'/1XAFFBdcQTyfaR0fEFRgg9wxGtg.jpg',release_date:'2020-12-10',vote_average:8.1,media_type:'tv',  original_language:'ja',seasons:[{season_number:1,episode_count:8},{season_number:2,episode_count:8}]},
+    {id:372058,title:'Your Lie in April',overview:'A piano prodigy who lost his ability to play rediscovers music through an eccentric violinist.',poster_path:'/4Av7H8X90tWuaIo7JbsXgs7HKA1.jpg',backdrop_path:'/4Av7H8X90tWuaIo7JbsXgs7HKA1.jpg',release_date:'2014-10-09',vote_average:8.6,media_type:'tv',  original_language:'ja',seasons:[{season_number:1,episode_count:22}]},
+    {id:496450,title:'Drive My Car', overview:'A renowned stage actor and director is forced to confront painful truths after his wife\'s sudden death.',poster_path:'/c1iIyDhSTUgr0SDjkV6T6MwxAcS.jpg',backdrop_path:'/c1iIyDhSTUgr0SDjkV6T6MwxAcS.jpg',release_date:'2021-08-20',vote_average:7.7,media_type:'movie',original_language:'ja'},
+    {id:65334, title:'Erased',       overview:'A man gains the ability to travel back in time moments before a tragedy and uses it to prevent his mother\'s murder.',poster_path:'/qE7uJ6X3DhpW2H7m7vQ7rfX9Hje.jpg',backdrop_path:'/qE7uJ6X3DhpW2H7m7vQ7rfX9Hje.jpg',release_date:'2016-01-08',vote_average:8.5,media_type:'tv',  original_language:'ja',seasons:[{season_number:1,episode_count:12}]},
+    {id:372754,title:'Shoplifters',  overview:'A family of small-time crooks take in an abandoned child and discover the bonds that truly hold them together.',poster_path:'/oUSAcwLR8wmFvY9z2Sm3o5C2Bvr.jpg',backdrop_path:'/oUSAcwLR8wmFvY9z2Sm3o5C2Bvr.jpg',release_date:'2018-06-08',vote_average:8.0,media_type:'movie',original_language:'ja'},
+  ],
   now: [
     {id:693134,title:'Dune: Part Two',overview:'Paul Atreides leads the Fremen on a path of revenge.',poster_path:'/1pdfbjO0V7d8EIclgDRnN9q4hxU.jpg',backdrop_path:'/xOMo8j3j0wLLvLiJuHYZ7Z25wJ0.jpg',release_date:'2024-02-27',vote_average:8.3,media_type:'movie',original_language:'en'},
     {id:823464,title:'Godzilla x Kong',overview:'The mighty Kong and fearsome Godzilla face a colossal threat hidden within our world.',poster_path:'/tMefBSflR6PGQLv7WvFPpTKpYQd.jpg',backdrop_path:'/GMPpFxMmD9m3oJF6GOnOzSH3X0.jpg',release_date:'2024-03-29',vote_average:7.2,media_type:'movie',original_language:'en'},
@@ -604,13 +648,17 @@ async function tGet(path, qs='') {
 async function fetchLive() {
   skelAll();
   try {
-    const [tr1,tr2,enM,enTV,koM,koTV,nowP,koTop] = await Promise.all([
+    const [tr1,tr2,enM,enTV,koM,koTV,zhM,zhTV,jaM,jaTV,nowP,koTop] = await Promise.all([
       tGet('/trending/all/week','page=1'),
       tGet('/trending/all/week','page=2'),
       tGet('/discover/movie','with_original_language=en&sort_by=popularity.desc'),
       tGet('/discover/tv',   'with_original_language=en&sort_by=popularity.desc'),
       tGet('/discover/movie','with_original_language=ko&sort_by=popularity.desc'),
       tGet('/discover/tv',   'with_original_language=ko&sort_by=popularity.desc'),
+      tGet('/discover/movie','with_original_language=zh&sort_by=popularity.desc'),
+      tGet('/discover/tv',   'with_original_language=zh&sort_by=popularity.desc'),
+      tGet('/discover/movie','with_original_language=ja&sort_by=popularity.desc'),
+      tGet('/discover/tv',   'with_original_language=ja&sort_by=popularity.desc'),
       tGet('/movie/now_playing'),
       tGet('/discover/tv',   'with_original_language=ko&sort_by=vote_average.desc&vote_count.gte=500'),
     ]);
@@ -625,8 +673,9 @@ async function fetchLive() {
       original_language:x.original_language,
     });
 
+    // Trending now includes en, ko, zh, ja so it reflects what's actually trending across all four catalogs.
     const raw = [...(tr1.results||[]),...(tr2.results||[])]
-      .filter(x=>(x.original_language==='en'||x.original_language==='ko')&&(x.media_type==='movie'||x.media_type==='tv'));
+      .filter(x=>['en','ko','zh','ja'].includes(x.original_language)&&(x.media_type==='movie'||x.media_type==='tv'));
     const seen = new Set();
     const trend = raw.filter(x=>{ if(seen.has(x.id))return false; seen.add(x.id); return true; })
       .slice(0,12).map(x=>n(x));
@@ -643,6 +692,8 @@ async function fetchLive() {
     renderAll({
       trend, hw: mix(enM.results||[],enTV.results||[],'movie','tv'),
       ko: mix(koM.results||[],koTV.results||[],'movie','tv'),
+      cn: mix(zhM.results||[],zhTV.results||[],'movie','tv'),
+      jp: mix(jaM.results||[],jaTV.results||[],'movie','tv'),
       now:   (nowP.results||[]).slice(0,12).map(x=>n(x,'movie')),
       topko: (koTop.results||[]).slice(0,12).map(x=>n(x,'tv')),
     });
@@ -655,7 +706,7 @@ async function fetchLive() {
 }
 
 function skelAll() {
-  ['g-trend','g-hw','g-ko','g-now','g-topko'].forEach(id=>{
+  ['g-trend','g-hw','g-ko','g-cn','g-jp','g-now','g-topko'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.innerHTML = Array.from({length:6}).map(()=>`
       <div class="flex flex-col gap-2">
@@ -671,6 +722,8 @@ function renderAll(cat) {
   grid('g-trend', cat.trend||[]);
   grid('g-hw',    cat.hw   ||[]);
   grid('g-ko',    cat.ko   ||[]);
+  grid('g-cn',    cat.cn   ||[]);
+  grid('g-jp',    cat.jp   ||[]);
   grid('g-now',   cat.now  ||[]);
   grid('g-topko', cat.topko||[]);
 }
@@ -788,11 +841,11 @@ function switchTab(tab) {
   A.tab = tab;
   document.querySelectorAll('[data-tab]').forEach(b=>{
     const on=b.dataset.tab===tab;
-    b.className=`tpill ${on?'active text-cv-text':'text-cv-muted hover:text-cv-text'} px-4 py-1.5 rounded-full text-sm font-semibold`;
+    b.className=`tpill ${on?'active text-cv-text':'text-cv-muted hover:text-cv-text'} px-4 py-1.5 rounded-full text-sm font-semibold shrink-0`;
   });
   document.querySelectorAll('[data-mob]').forEach(b=>{
     const on=b.dataset.mob===tab;
-    b.className=`mpill ${on?'active text-cv-accentL':'text-cv-muted'} flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold gap-0.5`;
+    b.className=`mpill ${on?'active text-cv-accentL':'text-cv-muted'} flex flex-col items-center justify-center py-2.5 px-4 text-[10px] font-bold gap-0.5 shrink-0 min-w-[64px]`;
   });
 
   const hero=document.getElementById('hero');
@@ -806,22 +859,29 @@ function switchTab(tab) {
   document.getElementById('s-input').value='';
   document.getElementById('s-clear').classList.add('hidden');
 
-  const sT =document.getElementById('sec-trend');
-  const sH =document.getElementById('sec-hw');
-  const sK =document.getElementById('sec-ko');
-  const sN =document.getElementById('sec-now');
-  const sTK=document.getElementById('sec-topko');
+  // Each section lists which tabs it should be visible under.
+  // 'all' tabs show every section; otherwise the section only shows
+  // when its own tab (or 'all') is active. Easy to extend — just add
+  // a new entry here when a new category/tab is introduced.
+  const SECTION_TABS = {
+    'sec-trend':  ['all'],
+    'sec-hw':     ['all','hollywood'],
+    'sec-ko':     ['all','kwave'],
+    'sec-cn':     ['all','cdrama'],
+    'sec-jp':     ['all','jdrama'],
+    'sec-now':    ['all','hollywood'],
+    'sec-topko':  ['all','kwave'],
+  };
 
   if (tab==='watchlist') {
     hero.classList.add('hidden'); cw.classList.add('hidden'); hv.classList.add('hidden');
     wv.classList.remove('hidden'); renderWL();
   } else {
     hero.classList.remove('hidden'); wv.classList.add('hidden'); hv.classList.remove('hidden');
-    sT.classList.toggle('hidden',  tab!=='all');
-    sH.classList.toggle('hidden',  tab==='kwave');
-    sK.classList.toggle('hidden',  tab==='hollywood');
-    sN.classList.toggle('hidden',  tab==='kwave');
-    sTK.classList.toggle('hidden', tab==='hollywood');
+    Object.entries(SECTION_TABS).forEach(([id, tabs])=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.toggle('hidden', !tabs.includes(tab));
+    });
     (tab==='all'&&A.cw.length) ? cw.classList.remove('hidden') : cw.classList.add('hidden');
   }
   window.scrollTo({top:0,behavior:'smooth'});
@@ -852,7 +912,7 @@ function wlCard(btn, id, mt) {
   heroWLBtn(); modalWLBtn();
 }
 function findDemo(id,mt){
-  const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...DEMO.now,...DEMO.topko];
+  const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko];
   return all.find(x=>x.id===id&&x.media_type===mt)||null;
 }
 function renderWL() {
@@ -1042,12 +1102,12 @@ async function doSearch(q){
   if(A.live){
     try{
       const d=await tGet('/search/multi','query='+encodeURIComponent(q));
-      results=(d.results||[]).filter(x=>(x.original_language==='en'||x.original_language==='ko')&&(x.media_type==='movie'||x.media_type==='tv'))
+      results=(d.results||[]).filter(x=>['en','ko','zh','ja'].includes(x.original_language)&&(x.media_type==='movie'||x.media_type==='tv'))
         .map(x=>({...x,title:x.title||x.name,release_date:x.release_date||x.first_air_date}));
     }catch(e){}
   }
   if(!results.length){
-    const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...DEMO.now,...DEMO.topko];
+    const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko];
     const seen=new Set(); const uniq=all.filter(x=>{ if(seen.has(x.id))return false;seen.add(x.id);return true; });
     const ql=q.toLowerCase();
     results=uniq.filter(x=>((x.title||x.name)||'').toLowerCase().includes(ql)||(x.overview||'').toLowerCase().includes(ql));
@@ -1070,13 +1130,10 @@ function clearSearch(){
   document.getElementById('s-clear').classList.add('hidden');
   document.getElementById('s-view').classList.add('hidden');
   document.getElementById('s-empty').classList.add('hidden');
-  if(A.tab==='watchlist'){
-    document.getElementById('wl-view').classList.remove('hidden');
-  } else {
-    document.getElementById('hero').classList.remove('hidden');
-    document.getElementById('home-view').classList.remove('hidden');
-    if(A.tab==='all'&&A.cw.length) document.getElementById('cw-sec').classList.remove('hidden');
-  }
+  // Re-apply the current tab's own visibility rules instead of blanket-showing
+  // every section — otherwise clearing a search while on e.g. 'cdrama' would
+  // incorrectly reveal Hollywood/K-Wave/J-Drama sections too.
+  switchTab(A.tab);
 }
 
 /*── Keys / settings ──────────────────────────────────*/
