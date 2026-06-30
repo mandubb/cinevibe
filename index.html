@@ -274,21 +274,87 @@
       </div>
     </div>
 
+    <!-- "See More" expanded category view — shared container for all 7 categories -->
+    <div id="expand-view" class="hidden">
+      <div class="flex items-center justify-between mb-6 pl-3" id="expand-header-bar">
+        <div class="border-l-4 pl-3 -ml-3" id="expand-border">
+          <h2 class="font-display text-xl font-bold" id="expand-title">—</h2>
+          <p class="text-xs text-cv-muted mt-0.5" id="expand-subtitle"></p>
+        </div>
+        <button onclick="closeExpanded()" class="text-xs text-cv-muted hover:text-cv-text flex items-center gap-1.5 transition-colors shrink-0">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>Back
+        </button>
+      </div>
+      <div id="expand-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      <div id="expand-empty" class="hidden text-center py-20">
+        <i class="fa-solid fa-clapperboard text-4xl text-cv-border mb-4 block"></i>
+        <p class="text-cv-muted text-sm">No titles available right now.</p>
+      </div>
+    </div>
+
     <!-- home sections -->
     <div id="home-view">
 
       <div id="sec-trend" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-cv-accent">
           <h2 class="font-display text-xl font-bold">Trending This Week</h2>
-          <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">🔥 Hot</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">🔥 Hot</span>
+            <button onclick="openExpanded('trend')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-trend" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+      </div>
+
+      <!-- ── FRANCHISES / UNIVERSES ── -->
+      <!-- Horizontal-scroll shelves, one per universe. Lives under 'all' tab only —
+           this is universe-based browsing, not language/country based like the others. -->
+      <div id="sec-franchise" class="flex flex-col gap-6">
+        <div class="flex items-center justify-between pl-3 border-l-4 border-cv-pink">
+          <h2 class="font-display text-xl font-bold">Franchises &amp; Universes</h2>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">
+              <i class="fa-solid fa-layer-group mr-1 text-[10px]"></i>Curated
+            </span>
+            <button onclick="openExpanded('franchise')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
+        </div>
+
+        <!-- MCU shelf -->
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2 pl-3">
+            <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md bg-red-600/15 text-red-400 border border-red-600/25">Marvel Studios</span>
+            <span class="text-xs text-cv-muted">Chronological by release</span>
+          </div>
+          <div id="shelf-mcu" class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory pl-3"></div>
+        </div>
+
+        <!-- DCU shelf -->
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2 pl-3">
+            <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md bg-blue-600/15 text-blue-400 border border-blue-600/25">DC Universe</span>
+            <span class="text-xs text-cv-muted">Chronological by release</span>
+          </div>
+          <div id="shelf-dcu" class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory pl-3"></div>
+        </div>
+
+        <!-- Animated Universe shelf -->
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2 pl-3">
+            <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md bg-cv-pink/15 text-cv-pinkL border border-cv-pink/25">Animated Universe</span>
+            <span class="text-xs text-cv-muted">Barbie, Pixar, Despicable Me &amp; more</span>
+          </div>
+          <div id="shelf-anim" class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory pl-3"></div>
+        </div>
       </div>
 
       <div id="sec-hw" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-cv-accentD">
           <h2 class="font-display text-xl font-bold">Latest Hollywood</h2>
-          <span class="text-[11px] text-cv-accentL bg-cv-accent/10 border border-cv-accent/20 px-2.5 py-0.5 rounded-full font-semibold">Movies &amp; Series</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-cv-accentL bg-cv-accent/10 border border-cv-accent/20 px-2.5 py-0.5 rounded-full font-semibold">Movies &amp; Series</span>
+            <button onclick="openExpanded('hw')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-hw" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -296,9 +362,12 @@
       <div id="sec-ko" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-emerald-600">
           <h2 class="font-display text-xl font-bold">Latest K-Dramas &amp; Films</h2>
-          <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
-            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+            </span>
+            <button onclick="openExpanded('ko')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-ko" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -306,9 +375,12 @@
       <div id="sec-cn" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-red-600">
           <h2 class="font-display text-xl font-bold">Latest C-Dramas &amp; Films</h2>
-          <span class="text-[11px] text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
-            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+            </span>
+            <button onclick="openExpanded('cn')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-cn" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -316,9 +388,12 @@
       <div id="sec-jp" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-indigo-500">
           <h2 class="font-display text-xl font-bold">Latest J-Dramas &amp; Films</h2>
-          <span class="text-[11px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
-            <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-closed-captioning text-[10px]"></i>Sub Only
+            </span>
+            <button onclick="openExpanded('jp')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-jp" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -326,7 +401,10 @@
       <div id="sec-now" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-cv-gold">
           <h2 class="font-display text-xl font-bold">Now in Cinemas</h2>
-          <span class="text-[11px] text-cv-gold bg-cv-gold/10 border border-cv-gold/20 px-2.5 py-0.5 rounded-full font-semibold">In Theaters</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-cv-gold bg-cv-gold/10 border border-cv-gold/20 px-2.5 py-0.5 rounded-full font-semibold">In Theaters</span>
+            <button onclick="openExpanded('now')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-now" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -334,9 +412,12 @@
       <div id="sec-topko" class="flex flex-col gap-5">
         <div class="flex items-center justify-between pl-3 border-l-4 border-cv-pink">
           <h2 class="font-display text-xl font-bold">Top Rated K-Dramas</h2>
-          <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">
-            <i class="fa-solid fa-trophy mr-1 text-[10px]"></i>All-Time Best
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-cv-pinkL bg-cv-pink/10 border border-cv-pink/20 px-2.5 py-0.5 rounded-full font-semibold">
+              <i class="fa-solid fa-trophy mr-1 text-[10px]"></i>All-Time Best
+            </span>
+            <button onclick="openExpanded('topko')" class="text-[11px] font-semibold text-cv-muted hover:text-cv-accentL transition-colors flex items-center gap-1">See More <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
         </div>
         <div id="g-topko" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
       </div>
@@ -600,6 +681,30 @@ const DEMO = {
     {id:70523, title:'My Love from the Star',overview:'An alien who landed in Korea in 1609 falls in love with a top actress.',poster_path:'/3o7xNzxlSenHYlRbBLLFXrjxTQR.jpg',backdrop_path:'/bXodbFfNiLoqCcAFhO0c3gFY8z0.jpg',release_date:'2013-12-18',vote_average:8.1,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:21}]},
     {id:83733, title:'Business Proposal',overview:'A woman meets her CEO boss on a blind date meant for her friend.',poster_path:'/pFQVaCH4eSeLaaqfY2ovwPu6bWlp.jpg',backdrop_path:'/b9uMbpPPVQNfX6TKkPAZ6HNjf9Y.jpg',release_date:'2022-02-28',vote_average:8.0,media_type:'tv',  original_language:'ko',seasons:[{season_number:1,episode_count:12}]},
   ],
+  mcu: [
+    {id:1726,  title:'Iron Man',      overview:'Billionaire engineer Tony Stark builds a powered suit of armor to fight evil.',poster_path:'/78lPtwv72eTNqFW9COBYI0dWDJa.jpg',backdrop_path:'/cyucTbsf8jhPSpgKAJZElpe2HHc.jpg',release_date:'2008-04-30',vote_average:7.6,media_type:'movie',original_language:'en'},
+    {id:1771,  title:'Captain America: The First Avenger',overview:'Steve Rogers becomes a super-soldier to fight the Red Skull and the Nazi science division HYDRA.',poster_path:'/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg',backdrop_path:'/wbVnE3MDLTm4FvR6r9bxk0ufFFB.jpg',release_date:'2011-07-22',vote_average:7.4,media_type:'movie',original_language:'en'},
+    {id:24428, title:'The Avengers',  overview:'Earth\'s mightiest heroes must come together to stop Loki and his alien army from enslaving humanity.',poster_path:'/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg',backdrop_path:'/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg',release_date:'2012-04-25',vote_average:7.7,media_type:'movie',original_language:'en'},
+    {id:271110,title:'Captain America: Civil War',overview:'Political pressure mounts to install a system of accountability when the Avengers\' actions lead to collateral damage.',poster_path:'/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg',backdrop_path:'/m9put1uYU5ZcRYqJrEf8w5Bxh9N.jpg',release_date:'2016-04-27',vote_average:7.4,media_type:'movie',original_language:'en'},
+    {id:299536,title:'Avengers: Infinity War',overview:'The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos.',poster_path:'/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg',backdrop_path:'/lmZFxXgJE3vgrciwuDib0N8CfQo.jpg',release_date:'2018-04-25',vote_average:8.2,media_type:'movie',original_language:'en'},
+    {id:299534,title:'Avengers: Endgame',overview:'After the devastating events of Infinity War, the remaining Avengers assemble for one final stand.',poster_path:'/or06FN3Dka5tukK1e9sl16pB3iy.jpg',backdrop_path:'/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg',release_date:'2019-04-24',vote_average:8.3,media_type:'movie',original_language:'en'},
+  ],
+  dcu: [
+    {id:1924,  title:'Batman Begins', overview:'Bruce Wayne returns to Gotham to fight injustice as Batman after years of training abroad.',poster_path:'/8RW2runSEs5J1rkhfIeZqcUKWvD.jpg',backdrop_path:'/ateSetLpYI55SeUM5OtdAFcw3aG.jpg',release_date:'2005-06-10',vote_average:7.7,media_type:'movie',original_language:'en'},
+    {id:155,   title:'The Dark Knight',overview:'The Joker unleashes chaos on Gotham, forcing Batman to confront his deepest beliefs.',poster_path:'/qJ2tWw3pmIv3d2n5c86RS5tH6IX.jpg',backdrop_path:'/dqK9Hn02JjP4CN6zsJU6i4R9w8x.jpg',release_date:'2008-07-16',vote_average:8.5,media_type:'movie',original_language:'en'},
+    {id:49026, title:'The Dark Knight Rises',overview:'Eight years after the Joker\'s reign of anarchy, Batman is forced from his exile to save Gotham from Bane.',poster_path:'/85cWkCVftiVs0BVey6pxX8uNqZ8.jpg',backdrop_path:'/qkKhPFc5Sju2gpdcXBaY6yfMtq8.jpg',release_date:'2012-07-16',vote_average:8.0,media_type:'movie',original_language:'en'},
+    {id:297802,title:'Wonder Woman',  overview:'Diana, princess of the Amazons, leaves her island home to fight in a war, discovering her true destiny.',poster_path:'/gfJGlDaHuWimErCr5Ql0I8x9QSy.jpg',backdrop_path:'/jOh5jjFOKurMhP3sFNkOcOzv2lA.jpg',release_date:'2017-05-30',vote_average:7.2,media_type:'movie',original_language:'en'},
+    {id:297762,title:'Aquaman',       overview:'Arthur Curry learns he is the heir to the underwater kingdom of Atlantis and must defend it.',poster_path:'/xLPffWMhMj1l40r7dnEr0NgUmK6.jpg',backdrop_path:'/5g0AgnUNwzVrSc1HhmrPLgnz3Mq.jpg',release_date:'2018-12-12',vote_average:6.9,media_type:'movie',original_language:'en'},
+    {id:414906,title:'The Batman',    overview:'Batman ventures into Gotham City\'s underworld when a sadistic killer leaves behind a trail of cryptic clues.',poster_path:'/74xTEgt7R36Fpooo50r9T25onhq.jpg',backdrop_path:'/b0PlSFdDwbyK0cf5RxwDpaOJQvQ.jpg',release_date:'2022-03-01',vote_average:7.7,media_type:'movie',original_language:'en'},
+  ],
+  anim: [
+    {id:346698,title:'Barbie',        overview:'Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land.',poster_path:'/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg',backdrop_path:'/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg',release_date:'2023-07-19',vote_average:7.0,media_type:'movie',original_language:'en'},
+    {id:301528,title:'Toy Story 4',   overview:'Woody, Buzz Lightyear and the rest of the gang embark on a road trip with a new toy named Forky.',poster_path:'/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg',backdrop_path:'/m5XnA2HtTNF0xqLh8DfXBcSqgRr.jpg',release_date:'2019-06-19',vote_average:7.7,media_type:'movie',original_language:'en'},
+    {id:508442,title:'Soul',          overview:'A musician who has lost his passion for music is transported out of his body and must find his way back.',poster_path:'/lBNNKwTGtWdL2x9aOWfHCMqypGD.jpg',backdrop_path:'/kf456ZGEXDDpZcdK3w7RNkbDqkO.jpg',release_date:'2020-12-25',vote_average:8.1,media_type:'movie',original_language:'en'},
+    {id:438148,title:'Minions',       overview:'Minions Kevin, Stuart and Bob set out to find a new evil boss to serve, leading them to villain Scarlet Overkill.',poster_path:'/q0R4crx3PR1op0fSUq0ya2zwwOY.jpg',backdrop_path:'/uoxOJiXxnsQ6vbWlmcwq4TmTcDS.jpg',release_date:'2015-06-17',vote_average:6.4,media_type:'movie',original_language:'en'},
+    {id:1022789,title:'Inside Out 2', overview:'Riley enters puberty and Joy must navigate new, intense emotions including Anxiety in her mind.',poster_path:'/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg',backdrop_path:'/stKGOm8UyhuLPR9sZLjs5AkmncA.jpg',release_date:'2024-06-11',vote_average:7.6,media_type:'movie',original_language:'en'},
+    {id:330457,title:'Frozen II',     overview:'Anna, Elsa, Kristoff and Olaf journey beyond Arendelle to discover the origin of Elsa\'s magical powers.',poster_path:'/qhb1qOilapbapxWQn9jtRCMwXJF.jpg',backdrop_path:'/xJWmckSwUDB9eFA0pwjyEksjJfV.jpg',release_date:'2019-11-20',vote_average:7.2,media_type:'movie',original_language:'en'},
+  ],
 };
 
 /*── App state ───────────────────────────────────────*/
@@ -622,6 +727,10 @@ async function boot() {
   renderCW(); updateBadge();
   if (A.live) await fetchLive();
   else { renderAll(DEMO); initHero(DEMO.trend); }
+  // Franchise shelves run independently — they have their own demo
+  // fallback, so this works whether or not a TMDB key is connected.
+  if (A.live) { fetchFranchises(); }
+  else { renderShelf('shelf-mcu', DEMO.mcu||[]); renderShelf('shelf-dcu', DEMO.dcu||[]); renderShelf('shelf-anim', DEMO.anim||[]); }
 }
 
 /*── TMDB helpers ─────────────────────────────────────*/
@@ -642,6 +751,21 @@ async function tGet(path, qs='') {
   const d = await r.json();
   try { sessionStorage.setItem(k, JSON.stringify({t:Date.now(),d})); } catch(e){}
   return d;
+}
+
+// Shared TMDB result normalizer — same shape used by fetchLive/fetchFranchises'
+// local copies, exposed at top level so openExpanded() (See More) can reuse it
+// without duplicating the mapping logic a third time.
+function normTMDB(x, mt) {
+  return {
+    id:x.id, title:x.title||x.name,
+    overview:x.overview, poster_path:x.poster_path,
+    backdrop_path:x.backdrop_path,
+    release_date:x.release_date||x.first_air_date,
+    vote_average:x.vote_average,
+    media_type:mt||x.media_type,
+    original_language:x.original_language,
+  };
 }
 
 /*── Live data ────────────────────────────────────────*/
@@ -703,6 +827,83 @@ async function fetchLive() {
     A.live=false; updateBanner();
     renderAll(DEMO); initHero(DEMO.trend);
   }
+}
+
+/*── FRANCHISE / UNIVERSE SHELVES ──────────────────────
+   MCU and DCU pull from TMDB's with_companies filter, which is the
+   cleanest way to get "everything from this studio" without manually
+   tracking dozens of sub-collection IDs. Animated Universe has no
+   single clean company/collection filter that works well, so that
+   shelf is a hand-picked list of TMDB IDs instead.
+   This runs independently from fetchLive() — if it fails or hits a
+   rate limit, the main catalog above is unaffected.                */
+const ANIMATED_UNIVERSE_IDS = [
+  // [tmdb_id, media_type] — Barbie, Pixar highlights, Despicable Me/Minions, etc.
+  [346698,'movie'], // Barbie
+  [10193, 'movie'], // Toy Story 3
+  [301528,'movie'], // Toy Story 4
+  [508943,'movie'], // Luca
+  [508442,'movie'], // Soul
+  [438148,'movie'], // Minions
+  [502356,'movie'], // The Super Mario Bros. Movie
+  [150540,'movie'], // Inside Out
+  [1022789,'movie'],// Inside Out 2
+  [811,    'movie'], // The Incredibles
+  [260513,'movie'], // The Incredibles 2
+  [9806,  'movie'], // The Princess and the Frog
+  [109445,'movie'], // Frozen
+  [330457,'movie'], // Frozen II
+];
+
+async function fetchFranchises() {
+  try {
+    const [mcuM, mcuTV, dcuM, dcuTV] = await Promise.all([
+      tGet('/discover/movie','with_companies=420&sort_by=primary_release_date.asc&primary_release_date.gte=2008-01-01'),
+      tGet('/discover/tv',   'with_companies=420&sort_by=first_air_date.asc'),
+      tGet('/discover/movie','with_companies=9993&sort_by=primary_release_date.asc&primary_release_date.gte=2005-01-01'),
+      tGet('/discover/tv',   'with_companies=9993&sort_by=first_air_date.asc'),
+    ]);
+
+    const n = (x,mt) => ({
+      id:x.id, title:x.title||x.name,
+      overview:x.overview, poster_path:x.poster_path,
+      backdrop_path:x.backdrop_path,
+      release_date:x.release_date||x.first_air_date,
+      vote_average:x.vote_average,
+      media_type:mt||x.media_type,
+      original_language:x.original_language,
+    });
+
+    const mcu = [...(mcuM.results||[]).map(x=>n(x,'movie')), ...(mcuTV.results||[]).map(x=>n(x,'tv'))]
+      .sort((a,b)=>new Date(a.release_date||0)-new Date(b.release_date||0)).slice(0,20);
+    const dcu = [...(dcuM.results||[]).map(x=>n(x,'movie')), ...(dcuTV.results||[]).map(x=>n(x,'tv'))]
+      .sort((a,b)=>new Date(a.release_date||0)-new Date(b.release_date||0)).slice(0,20);
+
+    // Animated Universe: fetch each curated title individually (cached after first load).
+    const animResults = await Promise.allSettled(
+      ANIMATED_UNIVERSE_IDS.map(([id,mt]) => tGet(`/${mt}/${id}`))
+    );
+    const anim = animResults
+      .filter(r=>r.status==='fulfilled')
+      .map((r,i)=>n(r.value, ANIMATED_UNIVERSE_IDS[i][1]))
+      .sort((a,b)=>new Date(a.release_date||0)-new Date(b.release_date||0));
+
+    renderShelf('shelf-mcu',  mcu);
+    renderShelf('shelf-dcu',  dcu);
+    renderShelf('shelf-anim', anim);
+  } catch(err) {
+    console.warn('Franchise fetch error (non-fatal):', err.message);
+    renderShelf('shelf-mcu',  DEMO.mcu  || []);
+    renderShelf('shelf-dcu',  DEMO.dcu  || []);
+    renderShelf('shelf-anim', DEMO.anim || []);
+  }
+}
+function renderShelf(id, items) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  if (!items.length) { el.innerHTML='<p class="text-cv-muted text-xs py-4 pl-1">No titles available.</p>'; return; }
+  items.forEach(it => el.appendChild(franchiseCard(it)));
 }
 
 function skelAll() {
@@ -780,7 +981,48 @@ function card(it) {
   return el;
 }
 
-/*── HERO ─────────────────────────────────────────────*/
+/*── FRANCHISE SHELF CARD ──────────────────────────────
+   Wider, fixed-width card for horizontal-scroll universe shelves.
+   Shows release year prominently since these shelves are meant to
+   be browsed chronologically within a franchise.                  */
+function franchiseCard(it) {
+  const title  = it.title||it.name||'Unknown';
+  const year   = it.release_date ? new Date(it.release_date).getFullYear() : '—';
+  const rating = it.vote_average ? it.vote_average.toFixed(1) : '—';
+  const isTV   = it.media_type==='tv';
+  const poster = it.poster_path
+    ? CFG.W + it.poster_path
+    : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=300';
+  const saved  = inWL(it);
+
+  const el = document.createElement('div');
+  el.className = 'media-card group relative flex flex-col bg-cv-surface border border-cv-border rounded-xl overflow-hidden cursor-pointer flex-shrink-0 w-36 sm:w-40 snap-start';
+  el.innerHTML = `
+    <div class="relative w-full aspect-[2/3] overflow-hidden bg-cv-bg">
+      <img class="cposter w-full h-full object-cover" src="${poster}" alt="${title}" loading="lazy"
+           onerror="this.src='https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=300'">
+      <div class="absolute inset-0 bg-gradient-to-t from-cv-bg via-transparent to-transparent opacity-50 group-hover:opacity-20 transition-opacity duration-300"></div>
+      <div class="absolute inset-0 bg-cv-bg/55 opacity-0 group-hover:opacity-100 transition-opacity duration-220 flex items-center justify-center">
+        <div class="w-11 h-11 rounded-full bg-cv-accent flex items-center justify-center glow-sage scale-75 group-hover:scale-100 transition-transform duration-220">
+          <i class="fa-solid fa-play text-white ml-0.5"></i>
+        </div>
+      </div>
+      <button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-cv-bg/80 border border-cv-border flex items-center justify-center text-xs hover:border-cv-accent transition-all"
+              onclick="event.stopPropagation();wlCard(this,${it.id},'${it.media_type}')">
+        <i class="${saved?'fa-solid text-cv-pink':'fa-regular text-cv-muted'} fa-bookmark text-[11px]"></i>
+      </button>
+      <span class="absolute bottom-2 left-2 text-[9px] font-black uppercase bg-cv-bg/80 border border-cv-border/50 px-1.5 py-0.5 rounded text-cv-dim">${year}</span>
+      ${isTV ? '<span class="absolute bottom-2 right-2 text-[9px] font-black uppercase bg-cv-accentD/80 px-1.5 py-0.5 rounded text-white">TV</span>' : ''}
+    </div>
+    <div class="p-2.5">
+      <h3 class="font-semibold text-xs text-cv-dim group-hover:text-cv-text transition-colors line-clamp-1">${title}</h3>
+      <span class="text-cv-gold flex items-center gap-0.5 text-[10px] mt-0.5"><i class="fa-solid fa-star text-[8px]"></i>${rating}</span>
+    </div>`;
+  el.addEventListener('click', () => openPlayer(it));
+  return el;
+}
+
+
 function initHero(items) {
   A.hero = items.filter(x=>x.backdrop_path);
   A.hidx = 0;
@@ -853,24 +1095,28 @@ function switchTab(tab) {
   const hv=document.getElementById('home-view');
   const wv=document.getElementById('wl-view');
   const sv=document.getElementById('s-view');
+  const ev=document.getElementById('expand-view');
 
   // clear search
   sv.classList.add('hidden');
   document.getElementById('s-input').value='';
   document.getElementById('s-clear').classList.add('hidden');
+  // close any open "See More" expanded view
+  ev.classList.add('hidden');
 
   // Each section lists which tabs it should be visible under.
   // 'all' tabs show every section; otherwise the section only shows
   // when its own tab (or 'all') is active. Easy to extend — just add
   // a new entry here when a new category/tab is introduced.
   const SECTION_TABS = {
-    'sec-trend':  ['all'],
-    'sec-hw':     ['all','hollywood'],
-    'sec-ko':     ['all','kwave'],
-    'sec-cn':     ['all','cdrama'],
-    'sec-jp':     ['all','jdrama'],
-    'sec-now':    ['all','hollywood'],
-    'sec-topko':  ['all','kwave'],
+    'sec-trend':     ['all'],
+    'sec-franchise': ['all'],
+    'sec-hw':        ['all','hollywood'],
+    'sec-ko':        ['all','kwave'],
+    'sec-cn':        ['all','cdrama'],
+    'sec-jp':        ['all','jdrama'],
+    'sec-now':       ['all','hollywood'],
+    'sec-topko':     ['all','kwave'],
   };
 
   if (tab==='watchlist') {
@@ -912,7 +1158,7 @@ function wlCard(btn, id, mt) {
   heroWLBtn(); modalWLBtn();
 }
 function findDemo(id,mt){
-  const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko];
+  const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko,...(DEMO.mcu||[]),...(DEMO.dcu||[]),...(DEMO.anim||[])];
   return all.find(x=>x.id===id&&x.media_type===mt)||null;
 }
 function renderWL() {
@@ -1094,7 +1340,7 @@ function initSearch(){
 }
 async function doSearch(q){
   if(!q){clearSearch();return;}
-  ['hero','cw-sec','home-view','wl-view'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  ['hero','cw-sec','home-view','wl-view','expand-view'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
   document.getElementById('s-view').classList.remove('hidden');
   document.getElementById('s-term').textContent=`"${q}"`;
 
@@ -1107,7 +1353,7 @@ async function doSearch(q){
     }catch(e){}
   }
   if(!results.length){
-    const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko];
+    const all=[...DEMO.trend,...DEMO.hw,...DEMO.ko,...(DEMO.cn||[]),...(DEMO.jp||[]),...DEMO.now,...DEMO.topko,...(DEMO.mcu||[]),...(DEMO.dcu||[]),...(DEMO.anim||[])];
     const seen=new Set(); const uniq=all.filter(x=>{ if(seen.has(x.id))return false;seen.add(x.id);return true; });
     const ql=q.toLowerCase();
     results=uniq.filter(x=>((x.title||x.name)||'').toLowerCase().includes(ql)||(x.overview||'').toLowerCase().includes(ql));
@@ -1133,6 +1379,164 @@ function clearSearch(){
   // Re-apply the current tab's own visibility rules instead of blanket-showing
   // every section — otherwise clearing a search while on e.g. 'cdrama' would
   // incorrectly reveal Hollywood/K-Wave/J-Drama sections too.
+  switchTab(A.tab);
+}
+
+/*── "SEE MORE" EXPANDED CATEGORY VIEW ─────────────────
+   One shared grid view reused by all 7 homepage categories.
+   Fixed page size (no infinite scroll, per design decision) —
+   each category fetches up to EXPAND_LIMIT titles once and shows them all. */
+const EXPAND_LIMIT = 36; // fixed batch size, no "load more"
+
+const EXPAND_META = {
+  trend:     { title:'Trending This Week',        sub:'🔥 Most popular across Hollywood, K-Wave, C-Drama &amp; J-Drama', border:'border-cv-accent' },
+  franchise: { title:'Franchises &amp; Universes', sub:'Marvel, DC &amp; the Animated Universe — all in one place',      border:'border-cv-pink' },
+  hw:        { title:'Latest Hollywood',           sub:'Movies &amp; series', border:'border-cv-accentD' },
+  ko:        { title:'Latest K-Dramas &amp; Films',sub:'Sub only — never dubbed', border:'border-emerald-600' },
+  cn:        { title:'Latest C-Dramas &amp; Films',sub:'Sub only — never dubbed', border:'border-red-600' },
+  jp:        { title:'Latest J-Dramas &amp; Films',sub:'Sub only — never dubbed', border:'border-indigo-500' },
+  now:       { title:'Now in Cinemas',             sub:'Currently playing in theaters', border:'border-cv-gold' },
+  topko:     { title:'Top Rated K-Dramas',         sub:'All-time best, by audience score', border:'border-cv-pink' },
+};
+
+// Per-category TMDB query used when fetching the expanded set live.
+// Mirrors the same discover params used on the homepage shelves, just
+// with a higher page size instead of the default ~12-item trim.
+async function fetchExpandedLive(cat) {
+  switch(cat) {
+    case 'trend': {
+      const [p1,p2,p3] = await Promise.all([
+        tGet('/trending/all/week','page=1'), tGet('/trending/all/week','page=2'), tGet('/trending/all/week','page=3')
+      ]);
+      const raw=[...(p1.results||[]),...(p2.results||[]),...(p3.results||[])]
+        .filter(x=>['en','ko','zh','ja'].includes(x.original_language)&&(x.media_type==='movie'||x.media_type==='tv'));
+      const seen=new Set();
+      return raw.filter(x=>{ if(seen.has(x.id))return false; seen.add(x.id); return true; })
+        .slice(0,EXPAND_LIMIT).map(x=>normTMDB(x));
+    }
+    case 'hw': {
+      const [m,tv] = await Promise.all([
+        tGet('/discover/movie','with_original_language=en&sort_by=popularity.desc'),
+        tGet('/discover/tv',   'with_original_language=en&sort_by=popularity.desc'),
+      ]);
+      return interleave(m.results||[], tv.results||[], 'movie', 'tv');
+    }
+    case 'ko': {
+      const [m,tv] = await Promise.all([
+        tGet('/discover/movie','with_original_language=ko&sort_by=popularity.desc'),
+        tGet('/discover/tv',   'with_original_language=ko&sort_by=popularity.desc'),
+      ]);
+      return interleave(m.results||[], tv.results||[], 'movie', 'tv');
+    }
+    case 'cn': {
+      const [m,tv] = await Promise.all([
+        tGet('/discover/movie','with_original_language=zh&sort_by=popularity.desc'),
+        tGet('/discover/tv',   'with_original_language=zh&sort_by=popularity.desc'),
+      ]);
+      return interleave(m.results||[], tv.results||[], 'movie', 'tv');
+    }
+    case 'jp': {
+      const [m,tv] = await Promise.all([
+        tGet('/discover/movie','with_original_language=ja&sort_by=popularity.desc'),
+        tGet('/discover/tv',   'with_original_language=ja&sort_by=popularity.desc'),
+      ]);
+      return interleave(m.results||[], tv.results||[], 'movie', 'tv');
+    }
+    case 'now': {
+      const [p1,p2] = await Promise.all([ tGet('/movie/now_playing','page=1'), tGet('/movie/now_playing','page=2') ]);
+      return [...(p1.results||[]),...(p2.results||[])].slice(0,EXPAND_LIMIT).map(x=>normTMDB(x,'movie'));
+    }
+    case 'topko': {
+      const d = await tGet('/discover/tv','with_original_language=ko&sort_by=vote_average.desc&vote_count.gte=300');
+      return (d.results||[]).slice(0,EXPAND_LIMIT).map(x=>normTMDB(x,'tv'));
+    }
+    case 'franchise': {
+      // Reuses whatever fetchFranchises() already populated (sessionStorage-cached
+      // TMDB calls underneath), so this doesn't trigger a fresh round of requests.
+      const [mcuM,mcuTV,dcuM,dcuTV] = await Promise.all([
+        tGet('/discover/movie','with_companies=420&sort_by=primary_release_date.asc&primary_release_date.gte=2008-01-01'),
+        tGet('/discover/tv',   'with_companies=420&sort_by=first_air_date.asc'),
+        tGet('/discover/movie','with_companies=9993&sort_by=primary_release_date.asc&primary_release_date.gte=2005-01-01'),
+        tGet('/discover/tv',   'with_companies=9993&sort_by=first_air_date.asc'),
+      ]);
+      const mcu=[...(mcuM.results||[]).map(x=>normTMDB(x,'movie')),...(mcuTV.results||[]).map(x=>normTMDB(x,'tv'))];
+      const dcu=[...(dcuM.results||[]).map(x=>normTMDB(x,'movie')),...(dcuTV.results||[]).map(x=>normTMDB(x,'tv'))];
+      const animResults = await Promise.allSettled(ANIMATED_UNIVERSE_IDS.map(([id,mt])=>tGet(`/${mt}/${id}`)));
+      const anim = animResults.filter(r=>r.status==='fulfilled').map((r,i)=>normTMDB(r.value, ANIMATED_UNIVERSE_IDS[i][1]));
+      return [...mcu,...dcu,...anim]
+        .sort((a,b)=>new Date(a.release_date||0)-new Date(b.release_date||0))
+        .slice(0,EXPAND_LIMIT);
+    }
+    default: return [];
+  }
+}
+function interleave(a,b,ta,tb,lim=EXPAND_LIMIT){
+  const out=[];
+  for(let i=0;i<Math.max(a.length,b.length)&&out.length<lim;i++){
+    if(a[i]) out.push(normTMDB(a[i],ta));
+    if(b[i]&&out.length<lim) out.push(normTMDB(b[i],tb));
+  }
+  return out;
+}
+
+// Demo-mode fallback per category — pulls straight from the existing DEMO object.
+function expandedDemoData(cat) {
+  switch(cat) {
+    case 'trend':     return DEMO.trend||[];
+    case 'franchise': return [...(DEMO.mcu||[]),...(DEMO.dcu||[]),...(DEMO.anim||[])];
+    case 'hw':        return DEMO.hw||[];
+    case 'ko':        return DEMO.ko||[];
+    case 'cn':        return DEMO.cn||[];
+    case 'jp':        return DEMO.jp||[];
+    case 'now':       return DEMO.now||[];
+    case 'topko':     return DEMO.topko||[];
+    default: return [];
+  }
+}
+
+async function openExpanded(cat) {
+  const meta = EXPAND_META[cat];
+  if (!meta) return;
+
+  // Hide everything else, show the expand view
+  document.getElementById('hero').classList.add('hidden');
+  document.getElementById('cw-sec').classList.add('hidden');
+  document.getElementById('home-view').classList.add('hidden');
+  document.getElementById('wl-view').classList.add('hidden');
+  document.getElementById('s-view').classList.add('hidden');
+  document.getElementById('expand-view').classList.remove('hidden');
+
+  document.getElementById('expand-title').innerHTML = meta.title;
+  document.getElementById('expand-subtitle').innerHTML = meta.sub;
+  document.getElementById('expand-border').className = `border-l-4 pl-3 -ml-3 ${meta.border}`;
+
+  const grid  = document.getElementById('expand-grid');
+  const empty = document.getElementById('expand-empty');
+  grid.innerHTML = Array.from({length:12}).map(()=>`
+    <div class="flex flex-col gap-2">
+      <div class="skel w-full aspect-[2/3] rounded-xl"></div>
+      <div class="skel h-3 w-3/4 rounded mt-1"></div>
+      <div class="skel h-2 w-1/2 rounded"></div>
+    </div>`).join('');
+  empty.classList.add('hidden');
+
+  let items = [];
+  if (A.live) {
+    try { items = await fetchExpandedLive(cat); }
+    catch(err) { console.warn('Expanded fetch failed, using demo:', err.message); items = expandedDemoData(cat); }
+  } else {
+    items = expandedDemoData(cat);
+  }
+
+  grid.innerHTML = '';
+  if (!items.length) { empty.classList.remove('hidden'); return; }
+  items.forEach(it => grid.appendChild(card(it)));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeExpanded() {
+  document.getElementById('expand-view').classList.add('hidden');
+  // Restore whatever the current tab should be showing
   switchTab(A.tab);
 }
 
